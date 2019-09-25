@@ -15,8 +15,8 @@ class CreateDialectsTable extends Migration
     {
         Schema::create('dialects', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('dialect_id')->references('id')->on('dialects');
+            $table->bigInteger('user_id')->comment('发布者');
+            $table->bigInteger('district_id')->comment('所属地区');
             $table->string('audio')->comment('音频地址');
             $table->string('recognition')->comment('音频识别');
             $table->string('translation')->comment('正确翻译');

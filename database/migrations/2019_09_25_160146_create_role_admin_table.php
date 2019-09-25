@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCertificatesTable extends Migration
+class CreateRoleAdminTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateCertificatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('role_admin', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('district_id')->comment('所属地区');
-            $table->string('name')->comment('证书名称');
-            $table->integer('rank')->unsigned()->comment('级别');
+            $table->bigInteger('role_id');
+            $table->bigInteger('admin_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateCertificatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('certificates');
+        Schema::dropIfExists('role_admin');
     }
 }

@@ -15,7 +15,7 @@ class CreateFeedbacksTable extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreign('dialect_id')->references('id')->on('dialects');
+            $table->bigInteger('dialect_id');
             $table->string('content')->comment('反馈内容');
             $table->string('translation')->comment('正确答案');
             $table->boolean('checked')->comment('是否已查看');

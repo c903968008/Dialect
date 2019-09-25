@@ -15,8 +15,8 @@ class CreateUserCertificateTable extends Migration
     {
         Schema::create('user_certificate', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('certificate_id')->references('id')->on('certificates');
+            $table->bigInteger('user_id');
+            $table->bigInteger('certificate_id');
             $table->timestamps();
         });
     }
