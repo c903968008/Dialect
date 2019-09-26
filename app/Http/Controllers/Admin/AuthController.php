@@ -48,7 +48,7 @@ class AuthController extends Controller
         if(!$token){
             return $this->fail('系统错误，无法生成token');
         }
-        return $this->success('登录成功');
+        return $this->success('登录成功',['token' => $token]);
     }
 
 }

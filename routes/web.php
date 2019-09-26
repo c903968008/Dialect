@@ -11,9 +11,15 @@
 |
 */
 $router->get('add','Controller@add');
-$router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => ['auth:web','cross']], function($router) {
+$router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
-//    $router->get('');
+    $router->post('login','AuthController@login');
+
+    $router->group(['middleware' => 'auth:web'], function($router) {
+        $router->post('',function (){
+            return 'ok';
+        });
+    });
 
 });
 

@@ -24,12 +24,4 @@ class Controller extends BaseController
             'msg' => $msg
         ]);
     }
-
-    public function add()
-    {
-        $admin = new Admin();
-        $admin->name = 'admin';
-        $admin->password = Hash::make('123456');
-        $admin->save();
-    }
 }
