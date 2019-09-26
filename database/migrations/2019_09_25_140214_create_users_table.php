@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('password');
-            $table->string('avatar');
+            $table->string('avatar')->default('default.jpg');
             $table->bigInteger('district_id')->comment('地区');
             $table->integer('correct')->unsigned()->comment('答对数量');
             $table->integer('total')->unsigned()->comment('答题总数');

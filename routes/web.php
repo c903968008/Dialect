@@ -10,7 +10,13 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+$router->get('add','Controller@add');
+$router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => ['auth:web','cross']], function($router) {
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+//    $router->get('');
+
+});
+
+$router->group(['middleware' => ['auth:api','cross']], function($router) {
+
 });
