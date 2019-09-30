@@ -21,6 +21,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->get('','AdminController@index');
             $router->get('show','AdminController@show');
             $router->post('create','AdminController@create');
+            $router->get('avatar','AdminController@getResultImage');
         });
 
 
