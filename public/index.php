@@ -12,6 +12,7 @@
 */
 
 $app = require __DIR__.'/../bootstrap/app.php';
+$helper = require __DIR__.'/../bootstrap/helper.php';
 
 /*
 |--------------------------------------------------------------------------

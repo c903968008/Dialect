@@ -10,16 +10,21 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->get('add','Controller@add');
+
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
     $router->post('login','AuthController@login');
 
-    $router->group(['middleware' => 'auth:web'], function($router) {
-        $router->post('',function (){
-            return 'ok';
+//    $router->group(['middleware' => 'auth:web'], function($router) {
+
+        $router->group(['prefix'=>'administrator/'], function($router) {
+            $router->get('','AdminController@index');
+            $router->get('show','AdminController@show');
+            $router->post('create','AdminController@create');
         });
-    });
+
+
+//    });
 
 });
 

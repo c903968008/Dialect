@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    public function success($msg = '操作成功' , $data = [])
+    public function success($data = [])
     {
         return response()->json([
            'code' => 200,
-           'msg' => $msg,
+           'msg' => '操作成功',
            'data' => $data
         ]);
     }
@@ -24,4 +22,5 @@ class Controller extends BaseController
             'msg' => $msg
         ]);
     }
+
 }
