@@ -22,6 +22,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->get('show','AdminController@show');
             $router->post('create','AdminController@create');
             $router->post('update','AdminController@update');
+            $router->post('delete','AdminController@delete');
         });
 
 

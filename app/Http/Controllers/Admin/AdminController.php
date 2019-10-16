@@ -11,47 +11,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\AdminRepository;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
 
-    protected $admin;
-
     public function __construct(AdminRepository $adminRepository)
     {
-        $this->admin = $adminRepository;
-    }
-
-    /*
-     * 获取管理员列表
-     */
-    public function index(Request $request)
-    {
-        $search = $request->get('search');
-        $admin = $this->admin->search($search);
-        $page = getParam($request,'page',Model::PAGE);
-        $size = getParam($request,'size',Model::SIZE);
-        $count = $this->admin->all()->count();
-        $admin = $this->admin->page($admin,$page,$size);
-        return $this->success(['count'=>$count,'reslut'=>$admin]);
-
-    }
-
-    /*
-     * 根据id显示管理员信息
-     */
-    public function show(Request $request)
-    {
-        $validateRules = [
-            'id' => 'required|integer'
-        ];
-        $this->validate($request, $validateRules);
-
-        $admin = $this->admin->getById($request->get('id'));
-        return $this->success($admin);
+        $this->repository = $adminRepository;
     }
 
     /*
@@ -72,11 +40,10 @@ class AdminController extends Controller
         ];
 
         $avatar = $this->upload($request);
-        if (isset($avatar)){
+        if (!empty($avatar)){
             $data['avatar'] = $avatar;
         }
-
-        $flag = $this->admin->create($data);
+        $flag = $this->repository->create($data);
         if($flag){
             return $this->success();
         }
@@ -86,7 +53,7 @@ class AdminController extends Controller
     /*
      * 修改管理员
      */
-    public function update(Request $request)
+    public function edit(Request $request)
     {
         $validateRules = [
             'id' => 'required',
@@ -108,11 +75,11 @@ class AdminController extends Controller
         }
 
         $avatar = $this->upload($request);
-        if (isset($avatar)){
+        if (!empty($avatar)){
             $data['avatar'] = $avatar;
         }
 
-        $flag = $this->admin->update($id,$data);
+        $flag = $this->repository->update($id,$data);
         if($flag){
             return $this->success();
         }
@@ -140,19 +107,6 @@ class AdminController extends Controller
             return false;
         }
         return false;
-    }
-
-    /*
-     * 删除管理员
-     */
-    public function delete(Request $request)
-    {
-        $validateRules = [
-            'id' => 'required|integer'
-        ];
-        $this->validate($request, $validateRules);
-
-
     }
 
 }
