@@ -38,10 +38,21 @@ class AdminRepository
 
     public function create($data)
     {
-        if(count(Admin::create($data)) > 0){
+        if(count(Admin::create($data)) > 0){        //create方法返回一个Admin对象
             return true;
         }
         return false;
+    }
+
+    public function update($id,$data)
+    {
+        $admin = self::getById($id);
+        return $admin->update($data);  //返回值true/false
+    }
+
+    public function delete($id)
+    {
+
     }
 
 }

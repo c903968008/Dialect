@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\AdminRepository;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,8 +32,8 @@ class AdminController extends Controller
     {
         $search = $request->get('search');
         $admin = $this->admin->search($search);
-        $page = getParam($request,'page',1);
-        $size = getParam($request,'size',10);
+        $page = getParam($request,'page',Model::PAGE);
+        $size = getParam($request,'size',Model::SIZE);
         $count = $this->admin->all()->count();
         $admin = $this->admin->page($admin,$page,$size);
         return $this->success(['count'=>$count,'reslut'=>$admin]);
@@ -54,7 +55,73 @@ class AdminController extends Controller
     }
 
     /*
-     *
+     * 添加管理员
+     */
+    public function create(Request $request)
+    {
+        $validateRules = [
+            'name' => 'required',
+            'password' => 'required',
+            'avatar' => 'nullable'
+        ];
+        $this->validate($request, $validateRules);
+
+        $data = [
+            'name' => $request->get('name'),
+            'password' => Hash::make($request->get('password')),
+        ];
+
+        $avatar = $this->upload($request);
+        if (isset($avatar)){
+            $data['avatar'] = $avatar;
+        }
+
+        $flag = $this->admin->create($data);
+        if($flag){
+            return $this->success();
+        }
+        return $this->fail();
+    }
+
+    /*
+     * 修改管理员
+     */
+    public function update(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required',
+            'name' => 'required',
+            'password' => 'nullable',
+            'avatar' => 'nullable'
+        ];
+        $this->validate($request, $validateRules);
+
+        $id = $request->get('id');
+        $password = $request->get('password');
+
+        $data = [
+            'name' => $request->get('name'),
+        ];
+
+        if (isset($password)) {
+            $data['password'] = Hash::make($request->get('password'));
+        }
+
+        $avatar = $this->upload($request);
+        if (isset($avatar)){
+            $data['avatar'] = $avatar;
+        }
+
+        $flag = $this->admin->update($id,$data);
+        if($flag){
+            return $this->success();
+        }
+        return $this->fail();
+    }
+
+
+    /*
+     * 上传头像
      */
     public function upload(Request $request)
     {
@@ -70,32 +137,22 @@ class AdminController extends Controller
                 $path = $file -> move('avatars',$newName); //把缓存文件移动到制定文件夹
                 return $newName;
             }
+            return false;
         }
-
+        return false;
     }
 
     /*
-     * 添加管理员
+     * 删除管理员
      */
-    public function create(Request $request)
+    public function delete(Request $request)
     {
         $validateRules = [
-            'name' => 'required',
-            'password' => 'required',
-            'avatar' => 'nullable'
+            'id' => 'required|integer'
         ];
         $this->validate($request, $validateRules);
 
-        $data = [
-            'name' => $request->get('name'),
-            'password' => Hash::make($request->get('password')),
-            'avatar' => $this->upload($request)
-        ];
-        $flag = $this->adminRepository->create($data);
-        if($flag){
-            return $this->success();
-        }
-        return $this->fail();
+
     }
 
 }
