@@ -5,16 +5,39 @@ namespace App\Http\Controllers;
 use App\Repositories\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    protected $repository;
+    protected $repository = [];
+    protected $createRules = [];
+    protected $editRules = [];
+    protected $createData = [];
+    protected $editData = [];
 
     public function __construct(Repository $repository)
     {
-        $this->repository = $repository;
+        $this->repository['self'] = $repository;
+    }
+
+    public function setCreateRules($createRules)
+    {
+        $this->createRules = $createRules;
+    }
+
+    public function setCreateData($createData)
+    {
+        $this->createData = $createData;
+    }
+
+    public function setEditRules($editRules)
+    {
+        $this->editRules = $editRules;
+    }
+
+    public function setEditData($editData)
+    {
+        $this->editData = $editData;
     }
 
     protected function success($data = [])
@@ -40,11 +63,11 @@ class Controller extends BaseController
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $model = $this->repository->search($search);
+        $model = $this->repository['self']->search($search);
         $page = getParam($request,'page',Model::PAGE);
         $size = getParam($request,'size',Model::SIZE);
-        $count = $this->repository->all()->count();
-        $model = $this->repository->page($model,$page,$size);
+        $count = $this->repository['self']->all()->count();
+        $model = $this->repository['self']->page($model,$page,$size);
         return $this->success(['count'=>$count,'reslut'=>$model]);
 
     }
@@ -59,7 +82,7 @@ class Controller extends BaseController
         ];
         $this->validate($request, $validateRules);
         $id = $request->get('id');
-        $model = $this->repository->getById($id);
+        $model = $this->repository['self']->getById($id);
         return $this->success($model);
     }
 
@@ -73,8 +96,35 @@ class Controller extends BaseController
         ];
         $this->validate($request, $validateRules);
         $id = $request->get('id');
-        $flag = $this->repository->delete($id);
+        $flag = $this->repository['self']->delete($id);
         if ($flag){
+            return $this->success();
+        }
+        return $this->fail();
+    }
+
+    /*
+     * 添加
+     */
+    public function create(Request $request)
+    {
+        $this->validate($request, $this->createRules);
+        $flag = $this->repository['self']->insert($this->createData);
+        if($flag){
+            return $this->success();
+        }
+        return $this->fail();
+    }
+
+    /*
+     * 修改
+     */
+    public function edit(Request $request)
+    {
+        $this->validate($request, $this->editRules);
+        $id = $request->get('id');
+        $flag = $this->repository['self']->update($id,$this->editData);
+        if($flag){
             return $this->success();
         }
         return $this->fail();

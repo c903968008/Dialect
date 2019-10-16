@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-class FeedbackRepository
+class FeedbackRepository extends Repository
 {
 
 }

@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-class QuestionRepository
+class QuestionRepository extends Repository
 {
 
 }

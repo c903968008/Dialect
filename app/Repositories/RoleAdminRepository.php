@@ -9,7 +9,11 @@
 namespace App\Repositories;
 
 
-class RoleAdminRepository
+
+
+class RoleAdminRepository extends Repository
 {
+
+
 
 }

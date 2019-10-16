@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\AdminRepository;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,7 +20,54 @@ class AdminController extends Controller
 
     public function __construct(AdminRepository $adminRepository)
     {
-        $this->repository = $adminRepository;
+        $this->repository['self'] = $adminRepository;
+    }
+
+    /*
+     * 获取管理员列表
+     */
+    public function index(Request $request)
+    {
+        $search = $request->get('search');
+        $admin = $this->repository['self']->search($search);
+        $page = getParam($request,'page',Model::PAGE);
+        $size = getParam($request,'size',Model::SIZE);
+
+        $count = $this->repository['self']->all()->count();
+        $admin = $this->repository['self']->page($admin,$page,$size);
+        return $this->success(['count'=>$count,'reslut'=>$admin]);
+
+    }
+
+    /*
+     * 根据id显示管理员信息
+     */
+    public function show(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer'
+        ];
+        $this->validate($request, $validateRules);
+        $id = $request->get('id');
+        $admin = $this->repository['self']->getById($id);
+        return $this->success($admin);
+    }
+
+    /*
+     * 删除管理员
+     */
+    public function delete(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer'
+        ];
+        $this->validate($request, $validateRules);
+        $id = $request->get('id');
+        $flag = $this->repository['self']->delete($id);
+        if ($flag){
+            $this->success();
+        }
+        $this->fail();
     }
 
     /*
@@ -43,7 +91,7 @@ class AdminController extends Controller
         if (!empty($avatar)){
             $data['avatar'] = $avatar;
         }
-        $flag = $this->repository->create($data);
+        $flag = $this->repository['self']->insert($data);
         if($flag){
             return $this->success();
         }
@@ -79,7 +127,7 @@ class AdminController extends Controller
             $data['avatar'] = $avatar;
         }
 
-        $flag = $this->repository->update($id,$data);
+        $flag = $this->repository['self']->update($id,$data);
         if($flag){
             return $this->success();
         }

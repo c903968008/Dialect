@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-class CertificateRepository
+class CertificateRepository extends Repository
 {
 
 }

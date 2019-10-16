@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-class DistrictRepository
+class DistrictRepository extends Repository
 {
 
 }

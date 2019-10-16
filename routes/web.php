@@ -21,8 +21,16 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->get('','AdminController@index');
             $router->get('show','AdminController@show');
             $router->post('create','AdminController@create');
-            $router->post('update','AdminController@update');
+            $router->post('edit','AdminController@edit');
             $router->post('delete','AdminController@delete');
+        });
+
+        $router->group(['prefix'=>'role/'], function($router) {
+            $router->get('','RoleController@index');
+            $router->get('show','RoleController@show');
+            $router->post('create','RoleController@create');
+            $router->post('edit','RoleController@edit');
+            $router->post('delete','RoleController@delete');
         });
 
 

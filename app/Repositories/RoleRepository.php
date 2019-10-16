@@ -9,7 +9,16 @@
 namespace App\Repositories;
 
 
-class RoleRepository
-{
+use App\Role;
 
+class RoleRepository extends Repository
+{
+    protected $model = Role::class;
+
+    public function search($search)
+    {
+        $role = new Role();
+        if (isset($search['name'])) $role = $role->where('name','like', '%'.$search['name'].'%');
+        return $role;
+    }
 }

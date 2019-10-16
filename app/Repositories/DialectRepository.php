@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-class DialectRepository
+class DialectRepository extends Repository
 {
 
 }

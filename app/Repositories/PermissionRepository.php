@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 
-class PermissionRepository
+class PermissionRepository extends Repository
 {
 
 }
