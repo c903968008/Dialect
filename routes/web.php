@@ -33,6 +33,14 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','RoleController@delete');
         });
 
+        $router->group(['prefix'=>'permission/'], function($router) {
+            $router->get('','PermissionController@index');
+            $router->get('show','PermissionController@show');
+            $router->post('create','PermissionController@create');
+            $router->post('edit','PermissionController@edit');
+            $router->post('delete','PermissionController@delete');
+        });
+
 
 //    });
 

@@ -9,7 +9,16 @@
 namespace App\Repositories;
 
 
+use App\Permission;
+
 class PermissionRepository extends Repository
 {
+    protected $model = Permission::class;
 
+    public function search($search)
+    {
+        $permission = new Permission();
+        if (isset($search['name'])) $permission = $permission->where('name','like', '%'.$search['name'].'%');
+        return $permission;
+    }
 }
