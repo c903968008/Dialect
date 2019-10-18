@@ -14,12 +14,22 @@ use App\Admin;
 class AdminRepository extends Repository
 {
     protected $model = Admin::class;
+    protected $with = 'roles';
 
     public function search($search)
     {
         $admin = new Admin();
         if (isset($search['name'])) $admin = $admin->where('name','like', '%'.$search['name'].'%');
         return $admin;
+    }
+
+    public function delete($id)
+    {
+        $admin = self::getById($id);
+        if (!empty($admin->roles)){
+            $admin->roles()->detach();
+        }
+        return $admin->delete();
     }
 
 }

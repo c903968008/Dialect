@@ -11,9 +11,10 @@ namespace App\Repositories;
 
 
 
+use App\RoleAdmin;
+
 class RoleAdminRepository extends Repository
 {
-
-
+    protected $model = RoleAdmin::class;
 
 }

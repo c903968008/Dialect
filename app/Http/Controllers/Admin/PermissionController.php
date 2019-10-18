@@ -15,10 +15,14 @@ use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
-    public function __construct(Request $request, PermissionRepository $permissionRepository)
-    {
-        $this->repository['self'] = $permissionRepository;
 
+    public function __construct(Request $request, PermissionRepository $repository, bool $is_with = true)
+    {
+        parent::__construct($request, $repository, $is_with);
+    }
+
+    public function createBlock(Request $request)
+    {
         $createRules = [
             'name' => 'required',
             'path' => 'required',
@@ -30,7 +34,10 @@ class PermissionController extends Controller
             'path' => $request->get('path'),
         ];
         $this->setCreateData($createData);
+    }
 
+    public function editBlock(Request $request)
+    {
         $editRules = [
             'id' => 'required',
             'name' => 'required',

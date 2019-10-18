@@ -40,4 +40,5 @@ class RoleController extends Controller
         ];
         $this->setEditData($editData);
     }
+
 }
