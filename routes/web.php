@@ -11,12 +11,15 @@
 |
 */
 
+$router->get('admin/test','Admin\AdminController@test');
+
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
     $router->post('login','AuthController@login');
 
 //    $router->group(['middleware' => 'auth:web'], function($router) {
 
+        //管理员
         $router->group(['prefix'=>'administrator/'], function($router) {
             $router->get('','AdminController@index');
             $router->get('show','AdminController@show');
@@ -24,7 +27,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('edit','AdminController@edit');
             $router->post('delete','AdminController@delete');
         });
-
+        //角色
         $router->group(['prefix'=>'role/'], function($router) {
             $router->get('','RoleController@index');
             $router->get('show','RoleController@show');
@@ -32,7 +35,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('edit','RoleController@edit');
             $router->post('delete','RoleController@delete');
         });
-
+        //权限
         $router->group(['prefix'=>'permission/'], function($router) {
             $router->get('','PermissionController@index');
             $router->get('show','PermissionController@show');

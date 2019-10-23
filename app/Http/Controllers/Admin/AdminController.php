@@ -82,7 +82,6 @@ class AdminController extends Controller
         return ResponseWrapper::fail();
     }
 
-
     /*
      * 上传头像
      */

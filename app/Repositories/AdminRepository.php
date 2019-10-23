@@ -42,7 +42,7 @@ class AdminRepository extends Repository
         return false;
     }
 
-    public function update($id, $data, $other)
+    public function update($id, $data, $other=[])
     {
         $admin = Admin::find($id);
         foreach ($data as $key => $value){
