@@ -32,4 +32,27 @@ class AdminRepository extends Repository
         return $admin->delete();
     }
 
+    public function insert($data)
+    {
+        $admin = Admin::create($data);
+        if (count($data)){
+            $admin->roles()->attach($data['role_ids']);
+            return true;
+        }
+        return false;
+    }
+
+    public function update($id, $data, $other)
+    {
+        $admin = Admin::find($id);
+        foreach ($data as $key => $value){
+            $admin->$key = $value;
+        }
+        if ($admin->save()){
+            $admin->roles()->sync($other);
+            return true;
+        }
+        return false;
+    }
+
 }

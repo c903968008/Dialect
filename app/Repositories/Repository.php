@@ -117,13 +117,14 @@ class Repository
     }
 
     /**
-     * 更新数据
+     * 更新数据（可批量修改）
      *
      * @param int/array $id
      * @param array $data
+     * @param array $orther
      * @return bool
      */
-    public function update($id,$data)
+    public function update($id,$data,$orther=[])
     {
         $id = is_array($id) ? $id : [$id];
         return $this->model::whereIn('id', $id)->update($data);  //返回值true/false

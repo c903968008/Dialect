@@ -18,103 +18,68 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
-    public function __construct(Request $request, AdminRepository $adminRepository)
+    public function __construct(Request $request, AdminRepository $repository, bool $is_with = true)
     {
-        parent::__construct($request,$adminRepository);
-
-//        $createRules = [
-//            'name' => 'required',
-//            'password' => 'required',
-//            'avatar' => 'nullable',
-//        ];
-//        $this->setCreateRules($createRules);
-//
-//        $createData = [
-//            'name' => $request->get('name'),
-//        ];
-//        $this->setCreateData($createData);
-//
-//        $editRules = [
-//            'id' => 'required',
-//            'name' => 'required',
-//        ];
-//        $this->setEditRules($editRules);
-//
-//        $editData = [
-//            'name' => $request->get('name'),
-//        ];
-//        $this->setEditData($editData);
+        parent::__construct($request, $repository, $is_with);
     }
 
-    /*
-     * 添加管理员
-     */
-    public function create(Request $request)
+    public function createBlock(Request $request)
     {
-//        $createRules = [
-//            'name' => 'required',
-//            'password' => 'required',
-//            'avatar' => 'nullable',
-//        ];
-//        $this->setCreateRules($createRules);
-//
-//        $validateRules = [
-//            'name' => 'required',
-//            'password' => 'required',
-//            'avatar' => 'nullable'
-//        ];
-//        $this->validate($request, $validateRules);
+        $createRules = [
+            'name' => 'required',
+            'password' => 'required',
+            'avatar' => 'nullable',
+            'role_ids' => 'required'
+        ];
+        $this->setCreateRules($createRules);
 
         $data = [
             'name' => $request->get('name'),
             'password' => Hash::make($request->get('password')),
+            'role_ids' => $request->get('role_ids'),
         ];
-
         $avatar = $this->upload($request);
         if (!empty($avatar)){
             $data['avatar'] = $avatar;
         }
-        $flag = $this->repository['self']->insert($data);
-        if($flag){
-            return $this->success();
-        }
-        return $this->fail();
+        $this->setCreateData($data);
     }
 
-    /*
-     * 修改管理员
-     */
-    public function edit(Request $request)
+    public function editBlock(Request $request)
     {
-        $validateRules = [
+        $editRules = [
             'id' => 'required',
             'name' => 'required',
             'password' => 'nullable',
-            'avatar' => 'nullable'
+            'avatar' => 'nullable',
+            'role_ids' => 'required'
         ];
-        $this->validate($request, $validateRules);
-
-        $id = $request->get('id');
-        $password = $request->get('password');
+        $this->setCreateRules($editRules);
 
         $data = [
+            'id' => $request->get('id'),
             'name' => $request->get('name'),
         ];
-
+        $password = $request->get('password');
         if (isset($password)) {
-            $data['password'] = Hash::make($request->get('password'));
+            $data['password'] = Hash::make($password);
         }
-
         $avatar = $this->upload($request);
         if (!empty($avatar)){
             $data['avatar'] = $avatar;
         }
+        $this->setEditData($data);
+    }
 
-        $flag = $this->repository['self']->update($id,$data);
+    public function edit(Request $request)
+    {
+        $this->validate($request, $this->editRules);
+        $id = $request->get('id');
+        $flag = $this->repository['self']->update($id,$this->editData,$request->get('role_ids'));
         if($flag){
-            return $this->success();
+            return ResponseWrapper::success();
         }
-        return $this->fail();
+        return ResponseWrapper::fail();
     }
 
 
