@@ -15,11 +15,12 @@ class CreateFeedbacksTable extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id');
             $table->bigInteger('dialect_id');
             $table->string('content')->comment('反馈内容');
             $table->string('translation')->comment('正确答案');
-            $table->boolean('checked')->comment('是否已查看');
-            $table->boolean('accepted')->comment('是否已接受该正确答案');
+            $table->boolean('checked')->default(false)->comment('是否已查看');
+            $table->boolean('accepted')->default(false)->comment('是否已接受该正确答案');
             $table->timestamps();
         });
     }

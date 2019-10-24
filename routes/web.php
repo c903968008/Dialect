@@ -65,6 +65,12 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->get('list','DistrictController@list');
         });
 
+        //反馈
+        $router->group(['prefix'=>'feedback/'], function($router) {
+            $router->get('','DistrictController@index');
+            $router->post('delete','DistrictController@delete');
+        });
+
 
 //    });
 
