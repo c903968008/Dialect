@@ -9,7 +9,17 @@
 namespace App\Repositories;
 
 
+use App\District;
+
 class DistrictRepository extends Repository
 {
+    protected $model = District::class;
+
+    public function search($search)
+    {
+        $district= new District();
+        if (isset($search['name'])) $district = $district->where('name','like', '%'.$search['name'].'%');
+        return $district;
+    }
 
 }

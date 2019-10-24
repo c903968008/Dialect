@@ -27,6 +27,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('edit','AdminController@edit');
             $router->post('delete','AdminController@delete');
         });
+
         //角色
         $router->group(['prefix'=>'role/'], function($router) {
             $router->get('','RoleController@index');
@@ -35,6 +36,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('edit','RoleController@edit');
             $router->post('delete','RoleController@delete');
         });
+
         //权限
         $router->group(['prefix'=>'permission/'], function($router) {
             $router->get('','PermissionController@index');
@@ -42,6 +44,25 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('create','PermissionController@create');
             $router->post('edit','PermissionController@edit');
             $router->post('delete','PermissionController@delete');
+        });
+
+        //用户
+        $router->group(['prefix'=>'user/'], function($router) {
+            $router->get('','UserController@index');
+            $router->get('show','UserController@show');
+            $router->post('create','UserController@create');
+            $router->post('edit','UserController@edit');
+            $router->post('delete','UserController@delete');
+        });
+
+        //地区
+        $router->group(['prefix'=>'district/'], function($router) {
+            $router->get('','DistrictController@index');
+            $router->get('show','DistrictController@show');
+            $router->post('create','DistrictController@create');
+            $router->post('edit','DistrictController@edit');
+            $router->post('delete','DistrictController@delete');
+            $router->get('list','DistrictController@list');
         });
 
 
