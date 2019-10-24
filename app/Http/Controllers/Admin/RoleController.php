@@ -46,7 +46,8 @@ class RoleController extends Controller
         $this->setCreateRules($editRules);
 
         $data = [
-            'id' => $request->get('id'),
+            'name' => $request->get('name'),
+            'permission_ids' => $request->get('permission_ids'),
         ];
         $this->setEditData($data);
     }

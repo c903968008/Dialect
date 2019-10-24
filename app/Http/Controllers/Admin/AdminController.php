@@ -57,7 +57,6 @@ class AdminController extends Controller
         $this->setCreateRules($editRules);
 
         $data = [
-            'id' => $request->get('id'),
             'name' => $request->get('name'),
         ];
         $password = $request->get('password');

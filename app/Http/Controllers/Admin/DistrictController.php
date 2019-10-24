@@ -44,7 +44,6 @@ class DistrictController extends Controller
         $this->setCreateRules($editRules);
 
         $data = [
-            'id' => $request->get('id'),
             'name' => $request->get('name'),
         ];
         $this->setEditData($data);
