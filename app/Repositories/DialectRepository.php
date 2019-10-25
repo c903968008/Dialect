@@ -10,7 +10,6 @@ namespace App\Repositories;
 
 
 use App\Dialect;
-use Illuminate\Http\Request;
 
 class DialectRepository extends Repository
 {
@@ -24,34 +23,9 @@ class DialectRepository extends Repository
         return $dialect;
     }
 
-    public function createBlock(Request $request)
+    public function list($district_id)
     {
-        $createRules = [
-            'name' => 'required',
-            'path' => 'required',
-        ];
-        $this->setCreateRules($createRules);
-
-        $createData = [
-            'name' => $request->get('name'),
-            'path' => $request->get('path'),
-        ];
-        $this->setCreateData($createData);
+        return Dialect::where('district_id',$district_id)->get();
     }
 
-    public function editBlock(Request $request)
-    {
-        $editRules = [
-            'id' => 'required',
-            'name' => 'required',
-            'path' => 'required',
-        ];
-        $this->setEditRules($editRules);
-
-        $editData = [
-            'name' => $request->get('name'),
-            'path' => $request->get('path'),
-        ];
-        $this->setEditData($editData);
-    }
 }

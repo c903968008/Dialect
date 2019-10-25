@@ -29,11 +29,11 @@ class RoleController extends Controller
         ];
         $this->setCreateRules($createRules);
 
-        $data = [
+        $createData = [
             'name' => $request->get('name'),
             'permission_ids' => $request->get('permission_ids'),
         ];
-        $this->setCreateData($data);
+        $this->setCreateData($createData);
     }
 
     public function editBlock(Request $request)
@@ -45,11 +45,11 @@ class RoleController extends Controller
         ];
         $this->setCreateRules($editRules);
 
-        $data = [
+        $editData = [
             'name' => $request->get('name'),
             'permission_ids' => $request->get('permission_ids'),
         ];
-        $this->setEditData($data);
+        $this->setEditData($editData);
     }
 
     public function edit(Request $request)

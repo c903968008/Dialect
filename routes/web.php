@@ -19,7 +19,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
 
     $router->group(['middleware' => 'auth:web'], function($router) {
-        $router->get('user','AuthController@user');
+
         //管理员
         $router->group(['prefix'=>'administrator/'], function($router) {
             $router->get('','AdminController@index');
@@ -70,6 +70,16 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
         $router->group(['prefix'=>'feedback/'], function($router) {
             $router->get('','DistrictController@index');
             $router->post('delete','DistrictController@delete');
+        });
+
+        //方言
+        $router->group(['prefix'=>'dialect/'], function($router) {
+            $router->get('','DialectController@index');
+            $router->get('show','DialectController@show');
+            $router->post('create','DialectController@create');
+            $router->post('edit','DialectController@edit');
+            $router->post('delete','DialectController@delete');
+            $router->get('list','DialectController@list');
         });
 
 

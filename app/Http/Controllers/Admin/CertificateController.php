@@ -49,11 +49,11 @@ class CertificateController extends Controller
         ];
         $this->setCreateRules($editRules);
 
-        $data = [
+        $editData = [
             'name' => $request->get('name'),
             'rank' => $request->get('rank'),
             'district_id' => $request->get('district_id'),
         ];
-        $this->setEditData($data);
+        $this->setEditData($editData);
     }
 }

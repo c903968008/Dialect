@@ -43,10 +43,10 @@ class DistrictController extends Controller
         ];
         $this->setCreateRules($editRules);
 
-        $data = [
+        $editData = [
             'name' => $request->get('name'),
         ];
-        $this->setEditData($data);
+        $this->setEditData($editData);
     }
 
     public function list()

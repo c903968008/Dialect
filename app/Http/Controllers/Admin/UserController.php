@@ -36,7 +36,7 @@ class UserController extends Controller
         ];
         $avatar = $this->upload($request);
         if (!empty($avatar)){
-            $data['avatar'] = $avatar;
+            $createData['avatar'] = $avatar;
         }
         $this->setCreateData($createData);
     }
@@ -51,18 +51,18 @@ class UserController extends Controller
         ];
         $this->setCreateRules($editRules);
 
-        $data = [
+        $editData = [
             'name' => $request->get('name'),
         ];
         $password = $request->get('password');
         if (isset($password)) {
-            $data['password'] = Hash::make($password);
+            $editData['password'] = Hash::make($password);
         }
         $avatar = $this->upload($request);
         if (!empty($avatar)){
-            $data['avatar'] = $avatar;
+            $editData['avatar'] = $avatar;
         }
-        $this->setEditData($data);
+        $this->setEditData($editData);
     }
 
     /*
@@ -79,7 +79,7 @@ class UserController extends Controller
                 $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
                 $mimeTye = $file -> getMimeType(); //也就是该资源的媒体类型
                 $newName = $newName = md5(date('ymdhis').$clientName).".". $entension; //定义上传文件的新名称
-                $path = $file -> move('avatars',$newName); //把缓存文件移动到制定文件夹
+                $path = $file -> move('avatars/user',$newName); //把缓存文件移动到制定文件夹
                 return $newName;
             }
             return false;

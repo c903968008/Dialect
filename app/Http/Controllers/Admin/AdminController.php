@@ -33,16 +33,16 @@ class AdminController extends Controller
         ];
         $this->setCreateRules($createRules);
 
-        $data = [
+        $createData = [
             'name' => $request->get('name'),
             'password' => Hash::make($request->get('password')),
             'role_ids' => $request->get('role_ids'),
         ];
         $avatar = $this->upload($request);
         if (!empty($avatar)){
-            $data['avatar'] = $avatar;
+            $createData['avatar'] = $avatar;
         }
-        $this->setCreateData($data);
+        $this->setCreateData($createData);
     }
 
     public function editBlock(Request $request)
@@ -56,18 +56,18 @@ class AdminController extends Controller
         ];
         $this->setCreateRules($editRules);
 
-        $data = [
+        $editData = [
             'name' => $request->get('name'),
         ];
         $password = $request->get('password');
         if (isset($password)) {
-            $data['password'] = Hash::make($password);
+            $editData['password'] = Hash::make($password);
         }
         $avatar = $this->upload($request);
         if (!empty($avatar)){
-            $data['avatar'] = $avatar;
+            $editData['avatar'] = $avatar;
         }
-        $this->setEditData($data);
+        $this->setEditData($editData);
     }
 
     public function edit(Request $request)
@@ -95,7 +95,7 @@ class AdminController extends Controller
                 $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
                 $mimeTye = $file -> getMimeType(); //也就是该资源的媒体类型
                 $newName = $newName = md5(date('ymdhis').$clientName).".". $entension; //定义上传文件的新名称
-                $path = $file -> move('avatars',$newName); //把缓存文件移动到制定文件夹
+                $path = $file -> move('avatars/admin',$newName); //把缓存文件移动到制定文件夹
                 return $newName;
             }
             return false;

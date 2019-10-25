@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dialect extends Model
 {
+
+    const ADMIN = 0;
+
     protected $fillable = [
         'user_id', 'district_id', 'audio', 'recognition', 'translation'
     ];
