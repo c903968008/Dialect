@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Admin;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ResponseWrapper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -45,9 +46,9 @@ class AuthController extends Controller
 
         $token = Auth::login($admin);
         if(!$token){
-            return $this->fail('系统错误，无法生成token');
+            return ResponseWrapper::fail('系统错误，无法生成token');
         }
-        return $this->success('登录成功',['token' => $token]);
+        return ResponseWrapper::success(['token' => $token]);
     }
 
 }

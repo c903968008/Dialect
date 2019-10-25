@@ -9,11 +9,11 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\District;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ResponseWrapper;
 use App\Repositories\DistrictRepository;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\JWTAuth;
 
 class DistrictController extends Controller
 {
@@ -54,4 +54,6 @@ class DistrictController extends Controller
         $district = $this->repository['self']->all();
         return ResponseWrapper::success($district);
     }
+
+
 }

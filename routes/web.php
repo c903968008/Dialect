@@ -17,8 +17,9 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
     $router->post('login','AuthController@login');
 
-//    $router->group(['middleware' => 'auth:web'], function($router) {
 
+    $router->group(['middleware' => 'auth:web'], function($router) {
+        $router->get('user','AuthController@user');
         //管理员
         $router->group(['prefix'=>'administrator/'], function($router) {
             $router->get('','AdminController@index');
@@ -72,7 +73,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
         });
 
 
-//    });
+    });
 
 });
 
