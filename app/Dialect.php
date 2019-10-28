@@ -16,6 +16,10 @@ class Dialect extends Model
 
     const ADMIN = 0;
 
+    const UNAUDITED = 0;
+    const NOPASS = 1;
+    const PASS = 2;
+
     protected $fillable = [
         'user_id', 'district_id', 'audio', 'recognition', 'translation'
     ];

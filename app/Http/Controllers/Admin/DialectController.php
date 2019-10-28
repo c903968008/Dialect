@@ -79,6 +79,26 @@ class DialectController extends Controller
     }
 
     /*
+     * 审核
+     */
+    public function audit(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer',
+            'status' => 'required'
+        ];
+        $this->validate($request, $validateRules);
+
+        $id = $request->get('id');
+        $status = $request->get('status');
+        $updated = $this->repository['self']->status($id,$status);
+        if ($updated){
+            return ResponseWrapper::success();
+        }
+        return ResponseWrapper::fail();
+    }
+
+    /*
      * 上传方言音频文件
      */
     public function upload(Request $request)

@@ -20,6 +20,7 @@ class CreateDialectsTable extends Migration
             $table->string('audio')->comment('音频地址');
             $table->string('recognition')->comment('音频识别');
             $table->string('translation')->comment('正确翻译');
+            $table->tinyInteger('status')->unsigned()->default(0)->comment('0:未审核,1:审核未通过,2:审核通过');
             $table->timestamps();
         });
     }

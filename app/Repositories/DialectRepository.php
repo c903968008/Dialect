@@ -28,4 +28,9 @@ class DialectRepository extends Repository
         return Dialect::where('district_id',$district_id)->get();
     }
 
+    public function status($id,$status)
+    {
+        return Dialect::where('id',$id)->update(['status'=>$status]);
+    }
+
 }

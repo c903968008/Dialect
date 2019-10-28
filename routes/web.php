@@ -18,7 +18,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
     $router->post('login','AuthController@login');
 
 
-    $router->group(['middleware' => 'auth:web'], function($router) {
+//    $router->group(['middleware' => 'auth:web'], function($router) {
 
         //管理员
         $router->group(['prefix'=>'administrator/'], function($router) {
@@ -80,10 +80,11 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('edit','DialectController@edit');
             $router->post('delete','DialectController@delete');
             $router->get('list','DialectController@list');
+            $router->post('audit','DialectController@audit');
         });
 
 
-    });
+//    });
 
 });
 
