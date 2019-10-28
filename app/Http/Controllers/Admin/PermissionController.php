@@ -10,14 +10,13 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
-use App\Repositories\AdminRepository;
 use App\Repositories\PermissionRepository;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
 
-    public function __construct(Request $request, PermissionRepository $repository, bool $is_with = true)
+    public function __construct(Request $request, PermissionRepository $repository, bool $is_with = false)
     {
         parent::__construct($request, $repository, $is_with);
     }

@@ -66,6 +66,9 @@ class DialectController extends Controller
         $this->setEditData($editData);
     }
 
+    /*
+     * 返回审核通过的某地区的方言
+     */
     public function list(Request $request)
     {
         $validateRules = [

@@ -23,4 +23,14 @@ class Dialect extends Model
     protected $fillable = [
         'user_id', 'district_id', 'audio', 'recognition', 'translation'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
 }

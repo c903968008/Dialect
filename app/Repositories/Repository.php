@@ -11,6 +11,8 @@ namespace App\Repositories;
 
 
 
+use phpDocumentor\Reflection\Types\This;
+
 class Repository
 {
     /**
@@ -43,7 +45,18 @@ class Repository
     public function all(bool $bool = false)
     {
         if ($bool && !empty($this->with)){
-            return $this->model::has($this->with)->with($this->with)->get();
+            if (is_array($this->with)){
+                foreach ($this->with as $key => $value){
+                    if ($key == 0){
+                        $model = $this->model::has($value)->with($value);
+                    }
+                    $model = $model->has($value)->with($value);
+                }
+                return $model->get();
+            } else{
+                var_dump('no');
+                return $this->model::has($this->with)->with($this->with)->get();
+            }
         }
         return $this->model::all();
     }
@@ -60,7 +73,16 @@ class Repository
     public function page($model, $page, $size, bool $bool = false)
     {
         if ($bool && !empty($this->with)){
-            $model = $model->has($this->with)->with($this->with);
+            if (is_array($this->with)){
+                foreach ($this->with as $key => $value){
+                    if ($key == 0){
+                        $model = $this->model::has($value)->with($value);
+                    }
+                    $model = $model->has($value)->with($value);
+                }
+            } else{
+                return $this->model::has($this->with)->with($this->with)->get();
+            }
         }
         return $model->forPage($page,$size)->get();
     }
@@ -75,7 +97,17 @@ class Repository
     public function getById($id, bool $bool = false)
     {
         if ($bool && !empty($this->with)){
-            return $this->model::has($this->with)->with($this->with)->find($id);
+            if (is_array($this->with)){
+                foreach ($this->with as $key => $value){
+                    if ($key == 0){
+                        $model = $this->model::has($value)->with($value);
+                    }
+                    $model = $model->has($value)->with($value);
+                }
+                return $model->find($id);
+            } else{
+                return $this->model::has($this->with)->with($this->with)->find($id);
+            }
         }
         return $this->model::find($id);
     }
