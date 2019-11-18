@@ -11,7 +11,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserCertificate extends Model
+class UserData extends Model
 {
     protected $table = 'user_data';
 

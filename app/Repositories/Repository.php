@@ -161,4 +161,15 @@ class Repository
         return $this->model::where('id', $id)->update($data);  //返回值true/false
     }
 
+    /**
+     * 计数
+     *
+     * @return mixed
+     */
+    public function count()
+    {
+        return $this->model::count();
+    }
+
+
 }

@@ -20,6 +20,13 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
 //    $router->group(['middleware' => 'auth:web'], function($router) {
 
+        //首页
+        $router->group(['prefix'=>'dashboard/'], function($router) {
+            $router->get('count','DashboardController@count');
+            $router->get('rank','DashboardController@rank');
+            $router->get('district/rank','DashboardController@rankByDistrict');
+        });
+
         //管理员
         $router->group(['prefix'=>'administrator/'], function($router) {
             $router->get('','AdminController@index');

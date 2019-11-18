@@ -18,6 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('password');
             $table->string('avatar')->default('default.jpg');
+            $table->integer('right')->unsigned()->default(0);
+            $table->integer('total')->unsigned()->default(0);
             $table->timestamps();
         });
     }

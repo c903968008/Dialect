@@ -22,4 +22,16 @@ class UserRepository extends Repository
         return $user;
     }
 
+    /*
+     * 根据答题正确率排名
+     */
+    public function getOrderByRight()
+    {
+        $users = User::get();
+        foreach ($users as &$user){
+            $user->accuracy = number_format($user->right / $user->total, 2);
+        }
+        return $users->sortByDesc('accuracy');
+    }
+
 }
