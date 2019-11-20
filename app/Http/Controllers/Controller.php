@@ -195,7 +195,7 @@ class Controller extends BaseController
      */
     public function create(Request $request)
     {
-        $this->validate($request, $this->createRules);
+//        $this->validate($request, $this->createRules);
         $flag = $this->repository['self']->insert($this->createData);
         if($flag){
             return ResponseWrapper::success();

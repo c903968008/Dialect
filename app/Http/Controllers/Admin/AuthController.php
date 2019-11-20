@@ -33,15 +33,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validateRules = [
-            'name' => 'required',
+            'username' => 'required',
             'password' => 'required'
         ];
         $this->validate($request, $validateRules);
 
-        $admin = Admin::where('name', $request->get('name'))->first();
-
-        if(!empty($user) && Hash::check($request->get('password'),$user->password)){
-            return $this->fail('账号或密码错误');
+        $admin = Admin::where('name', $request->get('username'))->first();
+        if(!empty($admin) && Hash::check($request->get('password'),$admin->password) == false){
+            return ResponseWrapper::fail('账号或密码错误');
         }
 
         $token = Auth::login($admin);
