@@ -17,7 +17,7 @@ class CreateAdminsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('password');
-            $table->string('avatar')->default('default.jpg');
+            $table->string('avatar')->default('avatars/default.jpg');
             $table->timestamps();
         });
     }

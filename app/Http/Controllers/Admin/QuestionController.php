@@ -62,8 +62,6 @@ class QuestionController extends Controller
     {
         $this->validate($request, $this->createRules);
 
-
-
         $flag = $this->repository['self']->insert($this->createData);
         if($flag){
             return ResponseWrapper::success();

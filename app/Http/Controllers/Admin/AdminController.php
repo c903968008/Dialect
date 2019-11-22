@@ -103,4 +103,15 @@ class AdminController extends Controller
         return false;
     }
 
+    public function getInfo(Request $request)
+    {
+        $id = $request->get('sub');
+        $admin = $this->repository['self']->getById($id,true);
+        if ($admin){
+            $admin->avatar = 'http://127.0.0.1:8089/' . $admin->avatar;
+            return ResponseWrapper::success($admin);
+        }
+        return ResponseWrapper::fail('无该用户信息');
+    }
+
 }

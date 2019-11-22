@@ -10,15 +10,18 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-$router->get('admin/test','Admin\AdminController@test');
+$router->get('',function (){
+    return 'lumen';
+});
 
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
     $router->post('login','AuthController@login');
+    $router->post('logout','AuthController@logout');
 
+    $router->group(['middleware' => 'auth:web'], function($router) {
 
-//    $router->group(['middleware' => 'auth:web'], function($router) {
+        $router->get('get_info','AdminController@getInfo');
 
         //首页
         $router->group(['prefix'=>'dashboard/'], function($router) {
@@ -90,11 +93,13 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('audit','DialectController@audit');
         });
 
-
-//    });
+    });
 
 });
 
-$router->group(['middleware' => ['auth:api','cross']], function($router) {
+$router->group(['middleware' => ['cross']], function($router) {
+    $router->get('login','AuthController@login');
+    $router->group(['middleware' => ['auth:api']], function($router) {
 
+    });
 });

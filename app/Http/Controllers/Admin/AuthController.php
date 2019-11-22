@@ -50,4 +50,9 @@ class AuthController extends Controller
         return ResponseWrapper::success(['token' => $token]);
     }
 
+    public function logout()
+    {
+        return ResponseWrapper::success();
+    }
+
 }

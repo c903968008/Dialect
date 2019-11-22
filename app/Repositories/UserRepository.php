@@ -34,4 +34,13 @@ class UserRepository extends Repository
         return $users->sortByDesc('accuracy');
     }
 
+    /*
+     * 登录时已有用户则更新，没有则添加
+     */
+    public function updateOrCreate($data)
+    {
+        $user = User::updateOrCreate(['openid' => $data['openid']], ['name' => $data['name'], 'avatar' => $data['avatar']]);
+        return $user;
+    }
+
 }

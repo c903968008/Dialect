@@ -17,9 +17,10 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('password');
-            $table->string('avatar')->default('default.jpg');
+            $table->string('avatar')->default('avatars/default.jpg');
             $table->integer('right')->unsigned()->default(0);
             $table->integer('total')->unsigned()->default(0);
+            $table->string('openid');
             $table->timestamps();
         });
     }
