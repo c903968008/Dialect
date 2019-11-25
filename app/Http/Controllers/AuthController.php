@@ -68,11 +68,11 @@ class AuthController extends Controller
 
         $rawData = json_decode($rawData);
         $userData = [
-            'name' => $rawData->nickName,
-            'avatar' => $rawData->avatarUrl,
+            'nickName' => $rawData->nickName,
+            'avatarUrl' => $rawData->avatarUrl,
             'openid' => $openid,
         ];
-        $user = User::updateOrCreate(['openid' => $userData['openid']], ['name' => $userData['name'], 'avatar' => $userData['avatar'], 'openid' => $userData['openid']]);;
+        $user = User::updateOrCreate(['openid' => $userData['openid']], ['nickName' => $userData['nickName'], 'avatarUrl' => $userData['avatarUrl'], 'openid' => $userData['openid']]);;
         if (count($user) == 0){
             return ResponseWrapper::fail('登录失败');
         }
@@ -81,7 +81,7 @@ class AuthController extends Controller
         if(!$token){
             return ResponseWrapper::fail('系统错误，无法生成token');
         }
-        return ResponseWrapper::success(['token' => $token]);
+        return ResponseWrapper::success(['token' => $token, 'userInfo' => $user]);
     }
 
 }

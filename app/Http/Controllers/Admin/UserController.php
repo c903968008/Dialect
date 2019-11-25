@@ -24,14 +24,14 @@ class UserController extends Controller
     public function createBlock(Request $request)
     {
         $createRules = [
-            'name' => 'required',
+            'nickName' => 'required',
             'password' => 'required',
-            'avatar' => 'nullable',
+            'avatarUrl' => 'nullable',
         ];
         $this->setCreateRules($createRules);
 
         $createData = [
-            'name' => $request->get('name'),
+            'nickName' => $request->get('name'),
             'password' => Hash::make($request->get('password')),
         ];
         $avatar = $this->upload($request);
@@ -45,14 +45,14 @@ class UserController extends Controller
     {
         $editRules = [
             'id' => 'required',
-            'name' => 'required',
+            'nickName' => 'required',
             'password' => 'nullable',
-            'avatar' => 'nullable',
+            'avatarUrl' => 'nullable',
         ];
         $this->setCreateRules($editRules);
 
         $editData = [
-            'name' => $request->get('name'),
+            'nickName' => $request->get('name'),
         ];
         $password = $request->get('password');
         if (isset($password)) {
@@ -60,7 +60,7 @@ class UserController extends Controller
         }
         $avatar = $this->upload($request);
         if (!empty($avatar)){
-            $editData['avatar'] = $avatar;
+            $editData['avatarUrl'] = $avatar;
         }
         $this->setEditData($editData);
     }
