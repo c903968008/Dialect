@@ -43,4 +43,13 @@ class UserRepository extends Repository
         return $user;
     }
 
+    /*
+     * 根据openid获取用户信息
+     */
+    public function getByOpenId($openid)
+    {
+        $user = User::where('openid', $openid)->first();
+        return $user;
+    }
+
 }
