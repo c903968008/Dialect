@@ -18,8 +18,9 @@ class CreateQuestionsTable extends Migration
             $table->bigInteger('user_id')->comment('出题人');
             $table->bigInteger('dialect_id');
             $table->text('wrong')->comment('三个错误答案');
-            $table->integer('answer_right')->comment('答题正确的人数');
-            $table->integer('answer_total')->comment('答题总人数');
+            $table->integer('answer_right')->default(0)->comment('答题正确的人数');
+            $table->integer('answer_total')->default(0)->comment('答题总人数');
+            $table->integer('like')->default(0)->comment('点赞数');
             $table->integer('difficulty')->comment('难度');
             $table->timestamps();
         });

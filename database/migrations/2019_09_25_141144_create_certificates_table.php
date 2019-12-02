@@ -17,7 +17,9 @@ class CreateCertificatesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('district_id')->comment('所属地区');
             $table->string('name')->comment('证书名称');
+            $table->string('image')->default('certificate/default.png')->comment('图片');
             $table->integer('rank')->unsigned()->comment('级别');
+            $table->text('description')->comment('证书描述');
             $table->timestamps();
         });
     }
