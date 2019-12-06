@@ -23,4 +23,12 @@ class QuestionRepository extends Repository
         if (isset($search['district_id'])) $question = $question->where('district_id',$search['district_id']);
         return $question;
     }
+
+    /*
+     * 根据用户id查询问题数
+     */
+    public function countWithUser($user_id)
+    {
+        return Question::where('user_id',$user_id)->count();
+    }
 }

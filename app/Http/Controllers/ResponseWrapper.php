@@ -20,9 +20,9 @@ class ResponseWrapper
     public static function success($data = [])
     {
         return response()->json([
+            'data' => $data,
             'code' => 200,
             'msg' => '操作成功',
-            'data' => $data
         ]);
     }
 
@@ -37,7 +37,7 @@ class ResponseWrapper
     {
         return response()->json([
             'code' => $code,
-            'msg' => $msg
+            'msg' => $msg,
         ]);
     }
 

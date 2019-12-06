@@ -98,8 +98,13 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 });
 
 $router->group(['middleware' => ['cross']], function($router) {
-    $router->get('login','AuthController@login');
+    $router->post('login','AuthController@login');
     $router->group(['middleware' => ['auth:api']], function($router) {
+
+        //用户
+        $router->group(['prefix'=>'user/'], function($router) {
+            $router->get('count','UserController@count');
+        });
 
     });
 });
