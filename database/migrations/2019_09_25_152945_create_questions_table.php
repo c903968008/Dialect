@@ -17,6 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->comment('出题人');
             $table->bigInteger('dialect_id');
+            $table->string('audio')->comment('音频地址');
             $table->text('wrong')->comment('三个错误答案');
             $table->integer('answer_right')->default(0)->comment('答题正确的人数');
             $table->integer('answer_total')->default(0)->comment('答题总人数');

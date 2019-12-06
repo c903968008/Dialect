@@ -103,7 +103,12 @@ $router->group(['middleware' => ['cross']], function($router) {
 
         //用户
         $router->group(['prefix'=>'user/'], function($router) {
-            $router->get('count','UserController@count');
+            $router->get('count','UserController@count');       //用户界面的各个需计数的数据
+        });
+
+        //问题
+        $router->group(['prefix'=>'question/'], function($router) {
+            $router->post('create','QuestionController@create');
         });
 
     });

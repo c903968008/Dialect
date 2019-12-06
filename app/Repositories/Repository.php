@@ -142,10 +142,7 @@ class Repository
      */
     public function insert($data)
     {
-        if(count($this->model::create($data)) > 0){     //create方法返回一个Model对象
-            return true;
-        }
-        return false;
+        return $this->model::create($data);     //create方法返回一个Model对象
     }
 
     /**

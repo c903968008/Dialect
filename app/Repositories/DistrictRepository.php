@@ -22,4 +22,12 @@ class DistrictRepository extends Repository
         return $district;
     }
 
+    /*
+     * 根据name查询
+     */
+    public function getByName($name)
+    {
+        return District::where('name',$name)->first();
+    }
+
 }

@@ -195,9 +195,9 @@ class Controller extends BaseController
      */
     public function create(Request $request)
     {
-//        $this->validate($request, $this->createRules);
+        $this->validate($request, $this->createRules);
         $flag = $this->repository['self']->insert($this->createData);
-        if($flag){
+        if(count($flag) > 0){
             return ResponseWrapper::success();
         }
         return ResponseWrapper::fail();
@@ -219,5 +219,28 @@ class Controller extends BaseController
             return ResponseWrapper::success();
         }
         return ResponseWrapper::fail();
+    }
+
+    /*
+     * 上传方言音频文件
+     */
+    public function upload(Request $request)
+    {
+        if(!empty($request->file())){
+
+            $file = $request->file('audio');
+            if($file -> isValid()) {
+                $clientName = $file -> getClientOriginalName(); //客户端文件名称..
+                $tmpName = $file ->getFileName(); //缓存在tmp文件夹中的文件名例php8933.tmp 这种类型的.
+                $realPath = $file -> getRealPath(); //这个表示的是缓存在tmp文件夹下的文件的绝对路径
+                $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
+                $mimeTye = $file -> getMimeType(); //也就是该资源的媒体类型
+                $newName = $newName = md5(date('ymdhis').$clientName).".". $entension; //定义上传文件的新名称
+                $path = $file -> move('dialect',$newName); //把缓存文件移动到制定文件夹
+                return $newName;
+            }
+            return false;
+        }
+        return false;
     }
 }

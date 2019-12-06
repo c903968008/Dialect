@@ -48,4 +48,12 @@ class DialectRepository extends Repository
      */
 //    public function
 
+
+    /*
+     * 根据translation查询
+     */
+    public function getByTranslation($translation)
+    {
+        return Dialect::where('translation', $translation)->first();
+    }
 }
