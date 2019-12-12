@@ -27,6 +27,28 @@ class QuestionController extends Controller
     }
 
     /*
+     * 上传音频
+     */
+    public function upload(Request $request)
+    {
+        if(!empty($request->file())){
+            $file = $request->file('audio');
+            if($file -> isValid()) {
+                $clientName = $file -> getClientOriginalName(); //客户端文件名称..
+                $tmpName = $file ->getFileName(); //缓存在tmp文件夹中的文件名例php8933.tmp 这种类型的.
+                $realPath = $file -> getRealPath(); //这个表示的是缓存在tmp文件夹下的文件的绝对路径
+                $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
+                $mimeTye = $file -> getMimeType(); //也就是该资源的媒体类型
+                $newName = $newName = md5(date('ymdhis').$clientName).".". $entension; //定义上传文件的新名称
+                $path = $file -> move('audio/',$newName); //把缓存文件移动到制定文件夹
+                return $newName;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /*
      * 用户出题
      */
     public function create(Request $request)
@@ -42,14 +64,20 @@ class QuestionController extends Controller
 
         $district_name = $request->get('district');
         $dialect_name = $request->get('dialect');
-        $user_id = $request->get('sub');
+//        $user_id = $request->get('sub');
+        $user_id = 6;
+
+        $audio = $this->upload($request);
+        if (!$audio){
+            return ResponseWrapper::fail('音频上传失败');
+        }
 
         //判断地区
         $district = $this->repository['district']->getByName($district_name);
         if (count($district) > 0) {  //地区已存在
             $district_id = $district->id;
         } else {    //地区不存在
-            $create_district = $this->repository['district']->create(['name' => $district_name]);
+            $create_district = $this->repository['district']->insert(['name' => $district_name]);
             if (count($create_district) == 0){
                 return ResponseWrapper::fail('地区创建失败');
             }
@@ -61,7 +89,7 @@ class QuestionController extends Controller
         if (count($district) > 0) {  //方言已存在
             $dialect_id = $dialect->id;
         } else {    //地区不存在
-            $create_dialect = $this->repository['dialect']->create([
+            $create_dialect = $this->repository['dialect']->insert([
                 'user_id' => $user_id,
                 'district_id' => $district_id,
                 'translation' => $dialect_name,
@@ -78,8 +106,11 @@ class QuestionController extends Controller
             'dialect_id' => $dialect_id,
             'wrong' => $request->get('wrong'),
             'difficulty' => $request->get('difficulty'),
+            'audio' => $audio,
         ];
+
         $flag = $this->repository['self']->insert($data);
+        dd($flag);
         if (count($flag)) {
             return ResponseWrapper::success();
         }

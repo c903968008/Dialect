@@ -99,7 +99,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
 $router->group(['middleware' => ['cross']], function($router) {
     $router->post('login','AuthController@login');
-    $router->group(['middleware' => ['auth:api']], function($router) {
+//    $router->group(['middleware' => ['auth:api']], function($router) {
 
         //用户
         $router->group(['prefix'=>'user/'], function($router) {
@@ -111,5 +111,5 @@ $router->group(['middleware' => ['cross']], function($router) {
             $router->post('create','QuestionController@create');
         });
 
-    });
+//    });
 });

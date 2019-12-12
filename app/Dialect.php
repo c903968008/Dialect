@@ -21,7 +21,7 @@ class Dialect extends Model
     const PASS = 2; //审核通过
 
     protected $fillable = [
-        'user_id', 'district_id', 'audio', 'recognition', 'translation'
+        'user_id', 'district_id', 'audio', 'recognition', 'translation', 'status'
     ];
 
     public function user()

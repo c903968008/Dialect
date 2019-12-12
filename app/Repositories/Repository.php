@@ -142,6 +142,14 @@ class Repository
      */
     public function insert($data)
     {
+        $data =  [
+            "user_id" => 6,
+  "dialect_id" => 2,
+  "wrong" => "早上好，晚上好，中午好",
+  "difficulty" => "0",
+  "audio" => "9b62a626988765af3af4a5e5f1e072e4.wav",
+];
+//        dd($data);
         return $this->model::create($data);     //create方法返回一个Model对象
     }
 
