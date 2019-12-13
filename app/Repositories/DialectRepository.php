@@ -60,8 +60,11 @@ class DialectRepository extends Repository
     /*
      * 根据地区查询方言
      */
-    public function getByDistrict($district_id)
+    public function getByDistrict($district_id, $model = null)
     {
+        if (isset($model)){
+            return $model->where(['district_id' => $district_id, 'status' => Dialect::PASS])->get(['id','audio','recognition','translation']);
+        }
         return Dialect::where(['district_id' => $district_id, 'status' => Dialect::PASS])->get(['id','audio','recognition','translation']);
     }
 }

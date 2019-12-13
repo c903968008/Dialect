@@ -134,12 +134,10 @@ class Controller extends BaseController
     {
         $search = json_decode($request->get('search'),true);
         $model = $this->repository['self']->search($search);
-//        dd($model->get());
         $page = getParam($request,'page',Model::PAGE);
         $size = getParam($request,'size',Model::SIZE);
         $model = $this->repository['self']->all($this->is_with,['is' => true,'model' => $model]);
         $count = $model->count();
-//        dd($model->get()->toArray());
         if ($count == 0){
             return ResponseWrapper::fail('数据不存在');
         }

@@ -34,8 +34,10 @@ class DialectController extends Controller
         $this->validate($request, $validateRules);
 
         $district_id = $request->get('district_id');
+        $search = json_decode($request->get('search'),true);
+        $dialect = $this->repository['self']->search($search);
 
-        $dialect = $this->repository['self']->getByDistrict($district_id);
+        $dialect = $this->repository['self']->getByDistrict($district_id,$dialect);
         if (count($dialect) == 0){
             return ResponseWrapper::fail('未获取到方言');
         }

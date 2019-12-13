@@ -39,10 +39,11 @@ class Repository
     /**
      * 获取所有数据
      *
-     * @param bool $bool 用于判断是否需要获取关联表的相关内容
-     * @return Model
+     * @param bool $bool
+     * @param array $search 搜索信息
+     * @return mixed
      */
-    public function all(bool $bool = false, array $search = ['is' => false, 'model' => ''])
+    public function all(bool $bool = false, array $search = ['is' => false, 'model' => null])
     {
         //搜索
         if ($search['is']){
@@ -81,7 +82,6 @@ class Repository
      * @param Model $model
      * @param int $page 当前页
      * @param int $size 一页所显示的数据条数
-     * @param bool $bool 用于判断是否需要获取关联表的相关内容
      * @return Model
      */
     public function page($model, $page, $size)
