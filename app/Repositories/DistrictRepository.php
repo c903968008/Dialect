@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\District;
+use Illuminate\Support\Facades\DB;
 
 class DistrictRepository extends Repository
 {
@@ -28,6 +29,14 @@ class DistrictRepository extends Repository
     public function getByName($name)
     {
         return District::where('name',$name)->first();
+    }
+
+    /*
+     * 根据汉字拼音首字母排序
+     */
+    public function getByGbk()
+    {
+        return District::orderBy(DB::raw('convert(`name` using gbk)'))->get();
     }
 
 }

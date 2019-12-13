@@ -64,8 +64,7 @@ class QuestionController extends Controller
 
         $district_name = $request->get('district');
         $dialect_name = $request->get('dialect');
-//        $user_id = $request->get('sub');
-        $user_id = 6;
+        $user_id = $request->get('sub');
 
         $audio = $this->upload($request);
         if (!$audio){

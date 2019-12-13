@@ -13,7 +13,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ResponseWrapper;
 use App\Repositories\DistrictRepository;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\JWTAuth;
 
 class DistrictController extends Controller
 {

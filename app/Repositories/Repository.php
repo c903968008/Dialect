@@ -54,7 +54,6 @@ class Repository
                 }
                 return $model->get();
             } else{
-                var_dump('no');
                 return $this->model::has($this->with)->with($this->with)->get();
             }
         }
