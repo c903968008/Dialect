@@ -31,12 +31,4 @@ class DistrictRepository extends Repository
         return District::where('name',$name)->first();
     }
 
-    /*
-     * 根据汉字拼音首字母排序
-     */
-    public function getByGbk()
-    {
-        return District::orderBy(DB::raw('convert(`name` using gbk)'))->get();
-    }
-
 }

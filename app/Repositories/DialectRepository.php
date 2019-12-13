@@ -56,4 +56,12 @@ class DialectRepository extends Repository
     {
         return Dialect::where('translation', $translation)->first();
     }
+
+    /*
+     * 根据地区查询方言
+     */
+    public function getByDistrict($district_id)
+    {
+        return Dialect::where(['district_id' => $district_id, 'status' => Dialect::PASS])->get(['id','audio','recognition','translation']);
+    }
 }

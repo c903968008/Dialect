@@ -116,5 +116,10 @@ $router->group(['middleware' => ['cross']], function($router) {
             $router->get('list','DistrictController@list');         //地区列表
         });
 
+        //方言
+        $router->group(['prefix'=>'dialect/'], function($router) {
+            $router->get('learn','DialectController@getByDistrict');         //学习方言列表
+        });
+
 //    });
 });
