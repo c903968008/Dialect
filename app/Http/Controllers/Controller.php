@@ -132,15 +132,18 @@ class Controller extends BaseController
      */
     public function index(Request $request)
     {
-        $search = $request->get('search');
+        $search = json_decode($request->get('search'),true);
         $model = $this->repository['self']->search($search);
+//        dd($model->get());
         $page = getParam($request,'page',Model::PAGE);
         $size = getParam($request,'size',Model::SIZE);
-        $count = $this->repository['self']->all($this->is_with)->count();
+        $model = $this->repository['self']->all($this->is_with,['is' => true,'model' => $model]);
+        $count = $model->count();
+//        dd($model->get()->toArray());
         if ($count == 0){
             return ResponseWrapper::fail('数据不存在');
         }
-        $model = $this->repository['self']->page($model,$page,$size,$this->is_with);
+        $model = $this->repository['self']->page($model,$page,$size);
         return ResponseWrapper::success(['count'=>$count,'reslut'=>$model]);
     }
 

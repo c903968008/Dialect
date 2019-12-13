@@ -42,22 +42,37 @@ class Repository
      * @param bool $bool 用于判断是否需要获取关联表的相关内容
      * @return Model
      */
-    public function all(bool $bool = false)
+    public function all(bool $bool = false, array $search = ['is' => false, 'model' => ''])
     {
-        if ($bool && !empty($this->with)){
-            if (is_array($this->with)){
-                foreach ($this->with as $key => $value){
-                    if ($key == 0){
-                        $model = $this->model::has($value)->with($value);
+        //搜索
+        if ($search['is']){
+            if ($bool && !empty($this->with)){
+                if (is_array($this->with)){
+                    foreach ($this->with as $key => $value){
+                        $model = $search['model']->has($value)->with($value);
                     }
-                    $model = $model->has($value)->with($value);
+                    return $model;
+                } else{
+                    return $search['model']->has($this->with)->with($this->with);
                 }
-                return $model->get();
-            } else{
-                return $this->model::has($this->with)->with($this->with)->get();
             }
+            return $search['model'];
+        } else {
+            if ($bool && !empty($this->with)){
+                if (is_array($this->with)){
+                    foreach ($this->with as $key => $value){
+                        if ($key == 0){
+                            $model = $this->model::has($value)->with($value);
+                        }
+                        $model = $model->has($value)->with($value);
+                    }
+                    return $model->get();
+                } else{
+                    return $this->model::has($this->with)->with($this->with)->get();
+                }
+            }
+            return $this->model::all();
         }
-        return $this->model::all();
     }
 
     /**
@@ -69,20 +84,8 @@ class Repository
      * @param bool $bool 用于判断是否需要获取关联表的相关内容
      * @return Model
      */
-    public function page($model, $page, $size, bool $bool = false)
+    public function page($model, $page, $size)
     {
-        if ($bool && !empty($this->with)){
-            if (is_array($this->with)){
-                foreach ($this->with as $key => $value){
-                    if ($key == 0){
-                        $model = $this->model::has($value)->with($value);
-                    }
-                    $model = $model->has($value)->with($value);
-                }
-            } else{
-                return $this->model::has($this->with)->with($this->with)->get();
-            }
-        }
         return $model->forPage($page,$size)->get();
     }
 
@@ -141,14 +144,6 @@ class Repository
      */
     public function insert($data)
     {
-        $data =  [
-            "user_id" => 6,
-  "dialect_id" => 2,
-  "wrong" => "早上好，晚上好，中午好",
-  "difficulty" => "0",
-  "audio" => "9b62a626988765af3af4a5e5f1e072e4.wav",
-];
-//        dd($data);
         return $this->model::create($data);     //create方法返回一个Model对象
     }
 

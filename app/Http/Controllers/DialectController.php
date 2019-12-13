@@ -28,11 +28,13 @@ class DialectController extends Controller
     public function getByDistrict(Request $request)
     {
         $validateRules = [
-            'district_id' => 'required|integer'
+            'district_id' => 'required|integer',
+            'search' => 'nullable',
         ];
         $this->validate($request, $validateRules);
 
         $district_id = $request->get('district_id');
+
         $dialect = $this->repository['self']->getByDistrict($district_id);
         if (count($dialect) == 0){
             return ResponseWrapper::fail('未获取到方言');
