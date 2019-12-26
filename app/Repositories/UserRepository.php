@@ -35,6 +35,14 @@ class UserRepository extends Repository
     }
 
     /*
+     * 根据答题总数排行
+     */
+    public function getOrderByTotal()
+    {
+        return User::orderBy('total','desc')->get();
+    }
+
+    /*
      * 登录时已有用户则更新，没有则添加
      */
     public function updateOrCreate($data)

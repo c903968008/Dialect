@@ -46,4 +46,33 @@ class UserController extends Controller
         ];
         return ResponseWrapper::success($count);
     }
+
+    /*
+     * 排行榜
+     */
+    public function rank(Request $request)
+    {
+        $validateRules = [
+            'type' => 'required|string',
+        ];
+        $this->validate($request, $validateRules);
+
+        $type = $request->get('type');
+        $user_id = $request->get('sub');
+        if ($type == 'right'){
+            $rank = $this->repository['self']->getOrderByRight();
+        } else if ($type == 'total'){
+            $rank = $this->repository['self']->getOrderByTotal();
+        }
+        if (isset($rank)){
+            $my_rank = 0;
+            foreach ($rank as $key => $value) {
+                if ($user_id == $value['id']){
+                    $my_rank = $key + 1;
+                }
+            }
+            return ResponseWrapper::success(['rank' => $rank, 'my_rank' => $my_rank]);
+        }
+        return ResponseWrapper::fail();
+    }
 }
