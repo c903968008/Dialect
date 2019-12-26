@@ -73,11 +73,11 @@ class QuestionController extends Controller
 
         //判断地区
         $district = $this->repository['district']->getByName($district_name);
-        if (count($district) > 0) {  //地区已存在
+        if (isset($district)) {  //地区已存在
             $district_id = $district->id;
         } else {    //地区不存在
             $create_district = $this->repository['district']->insert(['name' => $district_name]);
-            if (count($create_district) == 0){
+            if (!isset($create_district)){
                 return ResponseWrapper::fail('地区创建失败');
             }
             $district_id = $create_district->id;
@@ -85,7 +85,7 @@ class QuestionController extends Controller
 
         //判断方言
         $dialect = $this->repository['dialect']->getByTranslation($dialect_name);
-        if (count($district) > 0) {  //方言已存在
+        if (isset($district)) {  //方言已存在
             $dialect_id = $dialect->id;
         } else {    //地区不存在
             $create_dialect = $this->repository['dialect']->insert([
@@ -94,7 +94,7 @@ class QuestionController extends Controller
                 'translation' => $dialect_name,
                 'status' => Dialect::UNAUDITED,
             ]);
-            if (count($create_dialect) == 0){
+            if (!isset($create_dialect)){
                 return ResponseWrapper::fail('方言创建失败');
             }
             $dialect_id = $create_dialect->id;
@@ -109,11 +109,29 @@ class QuestionController extends Controller
         ];
 
         $flag = $this->repository['self']->insert($data);
-        dd($flag);
         if (count($flag)) {
             return ResponseWrapper::success();
         }
         return ResponseWrapper::fail();
+    }
 
+    /*
+     * 答题列表
+     */
+    public function index(Request $request)
+    {
+        $validateRules = [
+            'district_id' => 'required|integer',
+        ];
+        $this->validate($request, $validateRules);
+
+        $district_id = $request->get('district_id');
+        $dialect = $this->repository['dialect']->getByDistrict($district_id);
+        $dialect_ids = $dialect->pluck('id');
+        $questions = $this->repository['self']->getByDialects($dialect_ids);
+        if (!isset($questions)){
+            return ResponseWrapper::fail('未获取到题目');
+        }
+        return ResponseWrapper::success($questions);
     }
 }

@@ -73,7 +73,7 @@ class AuthController extends Controller
             'openid' => $openid,
         ];
         $user = User::updateOrCreate(['openid' => $userData['openid']], ['nickName' => $userData['nickName'], 'avatarUrl' => $userData['avatarUrl'], 'openid' => $userData['openid']]);;
-        if (count($user) == 0){
+        if (isset($user)){
             return ResponseWrapper::fail('登录失败');
         }
         $user->accuracy = $user->right / $user->total * 100;

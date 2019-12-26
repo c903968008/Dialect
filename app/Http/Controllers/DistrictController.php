@@ -27,7 +27,7 @@ class DistrictController extends Controller
     public function list()
     {
         $district = $this->repository['self']->all()->toArray();
-        if (count($district) == 0){
+        if (!isset($district)){
             return ResponseWrapper::fail('未获取到地区列表');
         }
         // 拼音首字母分组排序

@@ -99,7 +99,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
 $router->group(['middleware' => ['cross']], function($router) {
     $router->post('login','AuthController@login');
-//    $router->group(['middleware' => ['auth:api']], function($router) {
+    $router->group(['middleware' => ['auth:api']], function($router) {
 
         //用户
         $router->group(['prefix'=>'user/'], function($router) {
@@ -109,6 +109,7 @@ $router->group(['middleware' => ['cross']], function($router) {
         //问题
         $router->group(['prefix'=>'question/'], function($router) {
             $router->post('create','QuestionController@create');        //出题
+            $router->get('','QuestionController@index');        //答题列表
         });
 
         //地区
@@ -121,5 +122,5 @@ $router->group(['middleware' => ['cross']], function($router) {
             $router->get('learn','DialectController@getByDistrict');         //学习方言列表
         });
 
-//    });
+    });
 });

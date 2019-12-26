@@ -38,7 +38,7 @@ class DialectController extends Controller
         $dialect = $this->repository['self']->search($search);
 
         $dialect = $this->repository['self']->getByDistrict($district_id,$dialect);
-        if (count($dialect) == 0){
+        if (!isset($dialect)){
             return ResponseWrapper::fail('未获取到方言');
         }
         return ResponseWrapper::success($dialect);

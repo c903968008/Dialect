@@ -25,10 +25,18 @@ class QuestionRepository extends Repository
     }
 
     /*
-     * 根据用户id查询问题数
+     * 根据用户id查询题目数
      */
     public function countWithUser($user_id)
     {
         return Question::where('user_id',$user_id)->count();
+    }
+
+    /*
+     * 根据多个方言id查询题目列表
+     */
+    public function getByDialects($dialect_ids)
+    {
+        return Question::whereIn('dialect_id',$dialect_ids)->get();
     }
 }
