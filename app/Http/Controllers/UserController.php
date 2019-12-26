@@ -36,9 +36,9 @@ class UserController extends Controller
         $user_id = $request->get('sub');
         $user = $this->repository['self']->getById($user_id);
         //出题总量
-        $question_count = $this->repository['question']->countWithUser($user_id);
+        $question_count = $this->repository['question']->countByUser($user_id);
         //证书总数
-        $certificate_count = $this->repository['userCertificate']->countWithUser($user_id);
+        $certificate_count = $this->repository['userCertificate']->countByUser($user_id);
         $count = [
           'answer' => $user->total,
           'questin' => $question_count,

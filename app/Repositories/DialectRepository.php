@@ -43,11 +43,6 @@ class DialectRepository extends Repository
         return Dialect::where('id',$id)->update(['status'=>$status]);
     }
 
-    /*
-     * 判断方言的情况
-     */
-//    public function
-
 
     /*
      * 根据translation查询

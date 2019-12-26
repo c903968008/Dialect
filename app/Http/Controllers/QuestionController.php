@@ -134,4 +134,27 @@ class QuestionController extends Controller
         }
         return ResponseWrapper::success($questions);
     }
+
+    /*
+     * 答题
+     */
+    public function answer(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer',
+            'answer' => 'required|string'
+        ];
+        $this->validate($request, $validateRules);
+
+        $id = $request->get('id');
+        $answer = $request->get('answer');
+        if($this->repository['self']->isWrong($id,$answer)){
+            return ResponseWrapper::fail('回答错误');
+        }
+        $dialect = $this->repository['dialect']->getByTranslation($answer);
+        if (!isset($dialect)){
+            return ResponseWrapper::fail('回答错误');
+        }
+        return ResponseWrapper::success();
+    }
 }

@@ -18,7 +18,7 @@ class UserCertificateRepository extends Repository
     /*
      * 根据用户id查询证书数
      */
-    public function countWithUser($user_id)
+    public function countByUser($user_id)
     {
         return UserCertificate::where('user_id',$user_id)->count();
     }
