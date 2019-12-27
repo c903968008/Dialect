@@ -52,4 +52,12 @@ class QuestionRepository extends Repository
         }
         return false; //未答错，需要继续从方言表中判断
     }
+
+    /*
+     * 根据用户id查询题目列表
+     */
+    public function getByUser($user_id)
+    {
+        return Question::where('user_id',$user_id)->get();
+    }
 }

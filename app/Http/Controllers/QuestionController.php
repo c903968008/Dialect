@@ -118,7 +118,7 @@ class QuestionController extends Controller
     /*
      * 答题列表
      */
-    public function index(Request $request)
+    public function answerList(Request $request)
     {
         $validateRules = [
             'district_id' => 'required|integer',
@@ -129,7 +129,7 @@ class QuestionController extends Controller
         $dialect = $this->repository['dialect']->getByDistrict($district_id);
         $dialect_ids = $dialect->pluck('id');
         $questions = $this->repository['self']->getByDialects($dialect_ids);
-        if (!isset($questions)){
+        if ($questions->count() == 0){
             return ResponseWrapper::fail('未获取到题目');
         }
         return ResponseWrapper::success($questions);
@@ -156,5 +156,18 @@ class QuestionController extends Controller
             return ResponseWrapper::fail('回答错误');
         }
         return ResponseWrapper::success();
+    }
+
+    /*
+     * 用户的题目列表
+     */
+    public function userList(Request $request)
+    {
+        $user_id = $request->get('sub');
+        $questions = $this->repository['self']->getByUser($user_id);
+        if ($questions->count() == 0){
+            return ResponseWrapper::fail('未获取到题目列表');
+        }
+        return ResponseWrapper::success($questions);
     }
 }

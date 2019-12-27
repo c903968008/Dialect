@@ -110,8 +110,9 @@ $router->group(['middleware' => ['cross']], function($router) {
         //问题
         $router->group(['prefix'=>'question/'], function($router) {
             $router->post('create','QuestionController@create');        //出题
-            $router->get('','QuestionController@index');        //答题列表
+            $router->get('answer/list','QuestionController@answerList');        //答题列表
             $router->get('answer','QuestionController@answer');        //答题
+            $router->get('user/list','QuestionController@userList');        //用户的题
         });
 
         //地区
