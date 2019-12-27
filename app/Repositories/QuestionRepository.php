@@ -60,4 +60,18 @@ class QuestionRepository extends Repository
     {
         return Question::where('user_id',$user_id)->get();
     }
+
+    /*
+     * 点赞及取消点赞
+     */
+    public function updateLike($id,$status)
+    {
+        $question = Question::findOrFail($id);
+        if ($status){
+            $question->like++;
+        } else {
+            $question->like--;
+        }
+        return $question->save();
+    }
 }

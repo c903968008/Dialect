@@ -170,4 +170,24 @@ class QuestionController extends Controller
         }
         return ResponseWrapper::success($questions);
     }
+
+    /*
+     * 点赞和取消点赞
+     */
+    public function good(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer',
+            'status' => 'required|boolean'
+        ];
+        $this->validate($request, $validateRules);
+
+        $id = $request->get('id');
+        $status = $request->get('status');
+        $flag = $this->repository['self']->updateLike($id,$status);
+        if ($flag){
+            return ResponseWrapper::success();
+        }
+        return ResponseWrapper::fail();
+    }
 }

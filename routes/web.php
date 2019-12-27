@@ -113,6 +113,7 @@ $router->group(['middleware' => ['cross']], function($router) {
             $router->get('answer/list','QuestionController@answerList');        //答题列表
             $router->get('answer','QuestionController@answer');        //答题
             $router->get('user/list','QuestionController@userList');        //用户的题
+            $router->post('good','QuestionController@good');        //点赞
         });
 
         //地区
@@ -123,6 +124,11 @@ $router->group(['middleware' => ['cross']], function($router) {
         //方言
         $router->group(['prefix'=>'dialect/'], function($router) {
             $router->get('learn','DialectController@getByDistrict');         //学习方言列表
+        });
+
+        //反馈
+        $router->group(['prefix'=>'feedback/'], function($router) {
+            $router->get('create','FeedbackController@create');         //反馈
         });
 
 //    });
