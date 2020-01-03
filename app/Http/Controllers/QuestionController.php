@@ -71,23 +71,14 @@ class QuestionController extends Controller
             return ResponseWrapper::fail('音频上传失败');
         }
 
-        //判断地区
         $district = $this->repository['district']->getByName($district_name);
-        if (isset($district)) {  //地区已存在
-            $district_id = $district->id;
-        } else {    //地区不存在
-            $create_district = $this->repository['district']->insert(['name' => $district_name]);
-            if (!isset($create_district)){
-                return ResponseWrapper::fail('地区创建失败');
-            }
-            $district_id = $create_district->id;
-        }
+        $district_id = $district->id;
 
         //判断方言
         $dialect = $this->repository['dialect']->getByTranslation($dialect_name);
         if (isset($district)) {  //方言已存在
             $dialect_id = $dialect->id;
-        } else {    //地区不存在
+        } else {    //f方言不存在
             $create_dialect = $this->repository['dialect']->insert([
                 'user_id' => $user_id,
                 'district_id' => $district_id,
@@ -103,6 +94,7 @@ class QuestionController extends Controller
         $data = [
             'user_id' => $user_id,
             'dialect_id' => $dialect_id,
+            'district_id' => $district_id,
             'wrong' => $request->get('wrong'),
             'difficulty' => $request->get('difficulty'),
             'audio' => $audio,

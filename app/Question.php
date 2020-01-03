@@ -14,6 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     protected $fillable = [
-        'user_id', 'dialect_id', 'wrong', 'answer_right', 'answer_total', 'difficulty', 'audio', 'like'
+        'user_id', 'dialect_id', 'district_id', 'wrong', 'answer_right', 'answer_total', 'difficulty', 'audio', 'like'
     ];
 }

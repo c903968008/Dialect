@@ -14,6 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class Feedback extends Model
 {
     protected $fillable = [
-        'user_id', 'question_id', 'content', 'translation', 'checked', 'accepted'
+        'user_id', 'question_id','dialect_id', 'content', 'translation', 'checked', 'accepted'
     ];
 }
