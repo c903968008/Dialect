@@ -17,6 +17,7 @@ class CreateFeedbacksTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->bigInteger('question_id');
+            $table->bigInteger('dialect_id');
             $table->string('content')->comment('反馈内容');
             $table->string('translation')->comment('正确答案');
             $table->boolean('checked')->default(false)->comment('是否已查看');
