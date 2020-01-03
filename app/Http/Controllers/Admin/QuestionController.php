@@ -27,6 +27,7 @@ class QuestionController extends Controller
     {
         $createRules = [
             'dialect_id' => 'required',
+            'district_id' => 'required',
             'wrong' => 'required',
             'difficulty' => 'required'
         ];
@@ -45,6 +46,7 @@ class QuestionController extends Controller
         $editRules = [
             'id' => 'required',
             'dialect_id' => 'required',
+            'district_id' => 'required',
             'wrong' => 'required',
             'difficulty' => 'required'
         ];
