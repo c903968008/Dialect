@@ -15,6 +15,7 @@ class CreateDistrictsTable extends Migration
     {
         Schema::create('districts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('p_id')->default(0)->comment('上级id');
             $table->string('name')->comment('地区名称');
             $table->timestamps();
         });
