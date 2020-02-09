@@ -73,10 +73,12 @@ class AuthController extends Controller
             'openid' => $openid,
         ];
         $user = User::updateOrCreate(['openid' => $userData['openid']], ['nickName' => $userData['nickName'], 'avatarUrl' => $userData['avatarUrl'], 'openid' => $userData['openid']]);;
-        if (isset($user)){
+        if (!isset($user)){
             return ResponseWrapper::fail('登录失败');
         }
-        $user->accuracy = $user->right / $user->total * 100;
+        if ($user->total != 0){
+            $user->accuracy = $user->right / $user->total * 100;
+        }
 
         $token = Auth::login($user);
         if(!$token){
