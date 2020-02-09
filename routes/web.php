@@ -13,13 +13,14 @@
 $router->get('',function (){
     return 'lumen';
 });
+$router->get('/ttt','DistrictController@ttt');
 
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
     $router->post('login','AuthController@login');
     $router->post('logout','AuthController@logout');
 
-//    $router->group(['middleware' => 'auth:web'], function($router) {
+    $router->group(['middleware' => 'auth:web'], function($router) {
 
         $router->get('get_info','AdminController@getInfo');
 
@@ -93,7 +94,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('audit','DialectController@audit');
         });
 
-//    });
+    });
 
 });
 

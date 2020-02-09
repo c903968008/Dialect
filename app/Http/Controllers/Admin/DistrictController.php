@@ -25,11 +25,13 @@ class DistrictController extends Controller
     {
         $createRules = [
             'name' => 'required',
+            'p_id' => 'required'
         ];
         $this->setCreateRules($createRules);
 
         $createData = [
             'name' => $request->get('name'),
+            'p_id' => $request->get('p_id'),
         ];
         $this->setCreateData($createData);
     }
@@ -40,7 +42,7 @@ class DistrictController extends Controller
             'id' => 'required',
             'name' => 'required',
         ];
-        $this->setCreateRules($editRules);
+        $this->setEditRules($editRules);
 
         $editData = [
             'name' => $request->get('name'),
@@ -52,6 +54,16 @@ class DistrictController extends Controller
     {
         $district = $this->repository['self']->all();
         return ResponseWrapper::success($district);
+    }
+
+    public function ttt()
+    {
+        for ($i=1; $i <=401 ; $i++) { 
+            $d = District::find(i);
+            $d->created_at = "2020-02-08 14:55:54";
+            $d->updated_at = "2020-02-08 14:55:54";
+            $d->save();
+        }
     }
 
 

@@ -19,6 +19,7 @@ class DistrictRepository extends Repository
     public function search($search)
     {
         $district= new District();
+        if (isset($search['p_id'])) $district = $district->where('p_id', $search['p_id']);
         if (isset($search['name'])) $district = $district->where('name','like', '%'.$search['name'].'%');
         return $district;
     }

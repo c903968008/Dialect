@@ -43,7 +43,7 @@ class RoleController extends Controller
             'name' => 'required',
             'permission_ids' => 'required'
         ];
-        $this->setCreateRules($editRules);
+        $this->setEditRules($editRules);
 
         $editData = [
             'name' => $request->get('name'),

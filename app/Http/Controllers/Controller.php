@@ -134,12 +134,13 @@ class Controller extends BaseController
     {
         $search = json_decode($request->get('search'),true);
         $model = $this->repository['self']->search($search);
-        $page = getParam($request,'page',Model::PAGE);
-        $size = getParam($request,'size',Model::SIZE);
+        $model = $model->orderBy('id','DESC');
+        $page = getParam($request,'page',1);
+        $size = getParam($request,'size',20);
         $model = $this->repository['self']->all($this->is_with,['is' => true,'model' => $model]);
         $count = $model->count();
         if ($count == 0){
-            return ResponseWrapper::fail('数据不存在');
+            return ResponseWrapper::success('数据不存在');
         }
         $model = $this->repository['self']->page($model,$page,$size);
         return ResponseWrapper::success(['count'=>$count,'reslut'=>$model]);
@@ -176,12 +177,12 @@ class Controller extends BaseController
     public function delete(Request $request)
     {
         $validateRules = [
-            'id' => 'required|integer'
+            'id' => 'required|integer',
         ];
         $this->validate($request, $validateRules);
         $id = $request->get('id');
         $flag = $this->repository['self']->delete($id);
-        if ($flag){
+        if (count($flag)){
             return ResponseWrapper::success();
         }
         return ResponseWrapper::fail();

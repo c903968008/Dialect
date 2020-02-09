@@ -54,7 +54,7 @@ class AdminController extends Controller
             'avatar' => 'nullable',
             'role_ids' => 'required'
         ];
-        $this->setCreateRules($editRules);
+        $this->setEditRules($editRules);
 
         $editData = [
             'name' => $request->get('name'),
