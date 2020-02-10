@@ -40,4 +40,12 @@ class DistrictRepository extends Repository
         return District::where('p_id',$p_id)->get();
     }
 
+    /*
+     * 查询上级地区
+     */
+    public function getPrevious($p_id)
+    {
+        return District::find($p_id);
+    }
+
 }

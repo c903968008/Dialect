@@ -59,7 +59,18 @@ class DistrictController extends Controller
 
         $p_id = $request->get('p_id');
         $district = $this->repository['self']->getByPid($p_id);
-//        $district = $this->repository['self']->all();
+        return ResponseWrapper::success($district);
+    }
+
+    public function getPrevious(Request $request)
+    {
+        $validateRules = [
+            'p_id' => 'required|integer'
+        ];
+        $this->validate($request, $validateRules);
+
+        $p_id = $request->get('p_id');
+        $district = $this->repository['self']->getPrevious($p_id);
         return ResponseWrapper::success($district);
     }
 

@@ -19,6 +19,12 @@ class UserRepository extends Repository
     {
         $user = new User();
         if (isset($search['name'])) $user = $user->where('name','like', '%'.$search['name'].'%');
+        if (isset($search['accuracy_min'])) {
+            $user = $user->where('accuracy', '>=', $search['accuracy_min']);
+        }
+        if (isset($search['accuracy_max'])) {
+            $user = $user->where('accuracy', '<=', $search['accuracy_max']);
+        }
         return $user;
     }
 

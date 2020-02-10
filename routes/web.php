@@ -74,6 +74,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('edit','DistrictController@edit');
             $router->post('delete','DistrictController@delete');
             $router->get('list','DistrictController@list');
+            $router->get('previous','DistrictController@getPrevious');
         });
 
         //反馈
