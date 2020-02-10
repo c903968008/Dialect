@@ -14,6 +14,11 @@ use Illuminate\Database\Eloquent\Model;
 class Certificate extends Model
 {
     protected $fillable = [
-        'district_id', 'name', 'rank'
+        'district_id', 'name', 'rank', 'image', 'description', 'num'
     ];
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id', 'id');
+    }
 }

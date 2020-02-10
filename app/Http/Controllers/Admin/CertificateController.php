@@ -27,14 +27,18 @@ class CertificateController extends Controller
         $createRules = [
             'name' => 'required',
             'rank' => 'required',
+            'description' => 'nullable',
             'district_id' => 'required|integer',
+            'num' => 'required|integer',
         ];
         $this->setCreateRules($createRules);
 
         $createData = [
             'name' => $request->get('name'),
             'rank' => $request->get('rank'),
+            'description' => $request->get('description'),
             'district_id' => $request->get('district_id'),
+            'num' => $request->get('num'),
         ];
         $this->setCreateData($createData);
     }
@@ -47,7 +51,7 @@ class CertificateController extends Controller
             'rank' => 'required',
             'district_id' => 'required|integer',
         ];
-        $this->setCreateRules($editRules);
+        $this->setEditRules($editRules);
 
         $editData = [
             'name' => $request->get('name'),

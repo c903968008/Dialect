@@ -13,7 +13,6 @@
 $router->get('',function (){
     return 'lumen';
 });
-$router->get('/ttt','DistrictController@ttt');
 
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
@@ -92,6 +91,15 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','DialectController@delete');
             $router->get('list','DialectController@list');
             $router->post('audit','DialectController@audit');
+        });
+
+        //证书
+        $router->group(['prefix'=>'certificate/'], function($router) {
+            $router->get('','CertificateController@index');
+            $router->get('show','CertificateController@show');
+            $router->post('create','CertificateController@create');
+            $router->post('edit','CertificateController@edit');
+            $router->post('delete','CertificateController@delete');
         });
 
     });

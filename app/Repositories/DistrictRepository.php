@@ -32,4 +32,12 @@ class DistrictRepository extends Repository
         return District::where('name',$name)->first();
     }
 
+    /*
+     * 根据p_id查询
+     */
+    public function getByPid($p_id)
+    {
+        return District::where('p_id',$p_id)->get();
+    }
+
 }

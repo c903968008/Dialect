@@ -14,6 +14,7 @@ use App\Certificate;
 class CertificateRepository extends Repository
 {
     protected $model = Certificate::class;
+    protected $with = 'district';
 
     public function search($search)
     {

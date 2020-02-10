@@ -78,6 +78,8 @@ class AuthController extends Controller
         }
         if ($user->total != 0){
             $user->accuracy = $user->right / $user->total * 100;
+        } else {
+            $user->accuracy = 0;
         }
 
         $token = Auth::login($user);

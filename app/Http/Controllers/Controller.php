@@ -140,7 +140,7 @@ class Controller extends BaseController
         $model = $this->repository['self']->all($this->is_with,['is' => true,'model' => $model]);
         $count = $model->count();
         if ($count == 0){
-            return ResponseWrapper::success('数据不存在');
+            return ResponseWrapper::success(['count'=>$count]);
         }
         $model = $this->repository['self']->page($model,$page,$size);
         return ResponseWrapper::success(['count'=>$count,'reslut'=>$model]);
