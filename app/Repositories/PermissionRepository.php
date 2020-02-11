@@ -19,6 +19,7 @@ class PermissionRepository extends Repository
     {
         $permission = new Permission();
         if (isset($search['name'])) $permission = $permission->where('name','like', '%'.$search['name'].'%');
+        if (isset($search['path'])) $permission = $permission->where('path','like', '%'.$search['path'].'%');
         return $permission;
     }
 }
