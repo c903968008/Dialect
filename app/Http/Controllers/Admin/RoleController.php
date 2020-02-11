@@ -47,7 +47,6 @@ class RoleController extends Controller
 
         $editData = [
             'name' => $request->get('name'),
-            'permission_ids' => $request->get('permission_ids'),
         ];
         $this->setEditData($editData);
     }
@@ -58,7 +57,7 @@ class RoleController extends Controller
         $id = $request->get('id');
         $flag = $this->repository['self']->update($id,$this->editData,$request->get('permission_ids'));
         if($flag){
-            return ResponseWrapper::success();
+            return ResponseWrapper::success($flag);
         }
         return ResponseWrapper::fail();
     }

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ResponseWrapper;
 use App\Repositories\PermissionRepository;
 use Illuminate\Http\Request;
 
@@ -50,5 +51,11 @@ class PermissionController extends Controller
             'path' => $request->get('path'),
         ];
         $this->setEditData($editData);
+    }
+
+    public function list()
+    {
+        $permission = $this->repository['self']->getAll();
+        return ResponseWrapper::success($permission);
     }
 }

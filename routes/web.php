@@ -55,6 +55,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('create','PermissionController@create');
             $router->post('edit','PermissionController@edit');
             $router->post('delete','PermissionController@delete');
+            $router->get('list','PermissionController@list');
         });
 
         //用户

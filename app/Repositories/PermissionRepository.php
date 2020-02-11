@@ -22,4 +22,9 @@ class PermissionRepository extends Repository
         if (isset($search['path'])) $permission = $permission->where('path','like', '%'.$search['path'].'%');
         return $permission;
     }
+
+    public function getAll()
+    {
+        return Permission::all();
+    }
 }
