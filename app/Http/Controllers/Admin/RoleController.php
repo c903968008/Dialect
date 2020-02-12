@@ -62,4 +62,10 @@ class RoleController extends Controller
         return ResponseWrapper::fail();
     }
 
+    public function list()
+    {
+        $role = $this->repository['self']->getAll();
+        return ResponseWrapper::success($role);
+    }
+
 }

@@ -20,6 +20,9 @@ class AdminRepository extends Repository
     {
         $admin = new Admin();
         if (isset($search['name'])) $admin = $admin->where('name','like', '%'.$search['name'].'%');
+        if (isset($search['role_id'])) $admin = $admin->whereHas('roles', function ($query) use ($search){
+            $query->where('role_id', $search['role_id']);
+        });
         return $admin;
     }
 
@@ -34,9 +37,10 @@ class AdminRepository extends Repository
 
     public function insert($data)
     {
+        $role_ids = explode(',',$data['role_ids']);
         $admin = Admin::create($data);
         if (count($data)){
-            $admin->roles()->attach($data['role_ids']);
+            $admin->roles()->attach($role_ids);
             return true;
         }
         return false;
@@ -49,8 +53,9 @@ class AdminRepository extends Repository
             $admin->$key = $value;
         }
         if ($admin->save()){
-            $admin->roles()->sync($other);
-            return true;
+            $role_ids = explode(',',$other);
+            $admin->roles()->sync($role_ids);
+            return $admin->with('roles')->find($id);
         }
         return false;
     }

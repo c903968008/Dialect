@@ -57,4 +57,9 @@ class RoleRepository extends Repository
         }
         return false;
     }
+
+    public function getAll()
+    {
+        return Role::all();
+    }
 }

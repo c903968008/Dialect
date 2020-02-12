@@ -46,6 +46,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('create','RoleController@create');
             $router->post('edit','RoleController@edit');
             $router->post('delete','RoleController@delete');
+            $router->get('list','RoleController@list');
         });
 
         //权限
