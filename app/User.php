@@ -52,4 +52,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [];
     }
 
+    public function certificates()
+    {
+        return $this->belongsToMany(Certificate::class, 'user_certificate', 'user_id', 'certificate_id')
+            ->as('user_certificate');
+    }
+
 }

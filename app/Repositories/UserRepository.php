@@ -14,6 +14,7 @@ use App\User;
 class UserRepository extends Repository
 {
     protected $model = User::class;
+    protected $with = 'certificates';
 
     public function search($search)
     {

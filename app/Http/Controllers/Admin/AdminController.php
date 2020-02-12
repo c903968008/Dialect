@@ -12,7 +12,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ResponseWrapper;
 use App\Repositories\AdminRepository;
-use Cron\FieldFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -41,52 +40,17 @@ class AdminController extends Controller
             'password' => Hash::make($request->get('password')),
             'role_ids' => $request->get('role_ids'),
         ];
-        $avatar = $this->upload($request);
-        if (!empty($avatar)){
-            $createData['avatar'] = $avatar;
-        }
+//        $avatar = $this->upload($request);
+//        if (!empty($avatar)){
+//            $createData['avatar'] = $avatar;
+//        }
+//        if (!empty($this->name)){
+//            $createData['avatar'] = $this->name;
+//        }
         $this->setCreateData($createData);
     }
 
-//    public function editBlock(Request $request)
-//    {
-//        $editRules = [
-//            'id' => 'required',
-//            'name' => 'required',
-//            'password' => 'nullable',
-//            'avatar' => 'nullable',
-//            'role_ids' => 'required'
-//        ];
-//        $this->setEditRules($editRules);
-//
-//        $editData = [
-//            'name' => $request->get('name'),
-//        ];
-//        $password = $request->get('password');
-//        if (isset($password)) {
-//            $editData['password'] = Hash::make($password);
-//        }
-//        $avatar = $this->upload($request);
-////        var_dump($avatar);
-//        if (!empty($avatar)){
-//            $editData['avatar'] = $avatar;
-//        }
-//        $this->setEditData($editData);
-//    }
-
-//    public function edit(Request $request)
-//    {
-//        $this->validate($request, $this->editRules);
-//        $id = $request->get('id');
-//        dd($this->editData);
-//        $flag = $this->repository['self']->update($id,$this->editData,$request->get('role_ids'));
-//        if($flag){
-//            return ResponseWrapper::success($flag);
-//        }
-//        return ResponseWrapper::fail();
-//    }
-
-    public function edit(Request $request)
+    public function editBlock(Request $request)
     {
         $editRules = [
             'id' => 'required',
@@ -97,23 +61,43 @@ class AdminController extends Controller
         ];
         $this->setEditRules($editRules);
 
-        $data = [
+        $editData = [
             'name' => $request->get('name'),
         ];
         $password = $request->get('password');
         if (isset($password)) {
-            $data['password'] = Hash::make($password);
+            $editData['password'] = Hash::make($password);
         }
-        $id = $request->get('id');
+//        $avatar = $this->upload($request);
+//        if (!empty($avatar)){
+//            $editData['avatar'] = $avatar;
+//        }
+        $this->setEditData($editData);
+    }
 
-        $avatar = $this->uploadEdit($request);
-//        var_dump()
-//        var_dump(empty($avatar));
-        if (!empty($this->name)){
-            $data['avatar'] = $this->name;
+    public function create(Request $request)
+    {
+        $this->validate($request, $this->createRules);
+        $avatar = $this->upload($request);
+        if (!empty($avatar)){
+            $this->createData['avatar'] = $avatar;
         }
-//        dd($data);
-        $flag = $this->repository['self']->update($id,$data,$request->get('role_ids'));
+        $flag = $this->repository['self']->insert($this->createData);
+        if(isset($flag)){
+            return ResponseWrapper::success();
+        }
+        return ResponseWrapper::fail();
+    }
+
+    public function edit(Request $request)
+    {
+        $this->validate($request, $this->editRules);
+        $id = $request->get('id');
+        $avatar = $this->upload($request);
+        if (!empty($avatar)){
+            $this->editData['avatar'] = $avatar;
+        }
+        $flag = $this->repository['self']->update($id,$this->editData,$request->get('role_ids'));
         if($flag){
             return ResponseWrapper::success($flag);
         }
@@ -125,13 +109,9 @@ class AdminController extends Controller
      */
     public function upload(Request $request)
     {
-//        dd('1111');
         if(!empty($request->file())){
             $file = $request->file('avatar');
-//            dd($file);
-//            var_dump($file->isValid());
             if($file->isValid()) {
-//                dd('ok');
                 $clientName = $file -> getClientOriginalName(); //客户端文件名称..
                 $tmpName = $file ->getFileName(); //缓存在tmp文件夹中的文件名例php8933.tmp 这种类型的.
                 $realPath = $file -> getRealPath(); //这个表示的是缓存在tmp文件夹下的文件的绝对路径
@@ -144,31 +124,6 @@ class AdminController extends Controller
             return false;
         }
         return false;
-    }
-
-    /*
-     * 上传头像
-     */
-    public function uploadEdit(Request $request)
-    {
-//        dd('2222');
-        if(!empty($request->file())){
-            $file = $request->file('avatar');
-            if($file -> isValid()) {
-                $clientName = $file -> getClientOriginalName(); //客户端文件名称..
-                $tmpName = $file ->getFileName(); //缓存在tmp文件夹中的文件名例php8933.tmp 这种类型的.
-                $realPath = $file -> getRealPath(); //这个表示的是缓存在tmp文件夹下的文件的绝对路径
-                $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
-                $mimeTye = $file -> getMimeType(); //也就是该资源的媒体类型
-                $newName = md5(date('ymdhis').$clientName).".". $entension; //定义上传文件的新名称
-//                $path = $file -> move('avatars',$newName); //把缓存文件移动到制定文件夹
-                $file -> move('avatars',$newName); //把缓存文件移动到制定文件夹
-                $this->name = $newName;
-//                return $newName;
-            }
-//                return false;
-        }
-//        return $name;
     }
 
     public function getInfo(Request $request)

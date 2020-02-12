@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Repository;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
