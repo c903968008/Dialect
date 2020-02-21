@@ -56,6 +56,51 @@ class DialectController extends Controller
         $this->setEditData($editData);
     }
 
+    public function create(Request $request)
+    {
+        $this->validate($request, $this->createRules);
+        $file = $this->upload($request);
+        if (!empty($file)){
+            $this->createData['audio'] = $file;
+        }
+        $flag = $this->repository['self']->insert($this->createData);
+        if(isset($flag)){
+            return ResponseWrapper::success();
+        }
+        return ResponseWrapper::fail();
+    }
+
+    public function edit(Request $request)
+    {
+        $this->validate($request, $this->editRules);
+        $id = $request->get('id');
+        $file = $this->upload($request);
+        if (!empty($file)){
+            $this->editData['audio'] = $file;
+        }
+        $flag = $this->repository['self']->update($id,$this->editData);
+        if($flag){
+            return ResponseWrapper::success($flag);
+        }
+        return ResponseWrapper::fail();
+    }
+
+    public function index(Request $request)
+    {
+        $search = json_decode($request->get('search'),true);
+        $dialect = $this->repository['self']->search($search);
+        $dialect = $dialect->orderBy('id','DESC');
+        $page = getParam($request,'page',1);
+        $size = getParam($request,'size',20);
+        $dialect = $this->repository['self']->getAll($dialect);
+        $count = $dialect->count();
+        if ($count == 0){
+            return ResponseWrapper::success(['count'=>$count]);
+        }
+        $dialect = $this->repository['self']->page($dialect,$page,$size);
+        return ResponseWrapper::success(['count'=>$count,'reslut'=>$dialect]);
+    }
+
     /*
      * 返回审核通过的某地区的方言
      */

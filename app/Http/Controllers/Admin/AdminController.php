@@ -40,13 +40,6 @@ class AdminController extends Controller
             'password' => Hash::make($request->get('password')),
             'role_ids' => $request->get('role_ids'),
         ];
-//        $avatar = $this->upload($request);
-//        if (!empty($avatar)){
-//            $createData['avatar'] = $avatar;
-//        }
-//        if (!empty($this->name)){
-//            $createData['avatar'] = $this->name;
-//        }
         $this->setCreateData($createData);
     }
 
@@ -68,10 +61,6 @@ class AdminController extends Controller
         if (isset($password)) {
             $editData['password'] = Hash::make($password);
         }
-//        $avatar = $this->upload($request);
-//        if (!empty($avatar)){
-//            $editData['avatar'] = $avatar;
-//        }
         $this->setEditData($editData);
     }
 

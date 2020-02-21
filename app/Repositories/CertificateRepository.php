@@ -20,7 +20,7 @@ class CertificateRepository extends Repository
     {
         $certificate = new Certificate();
         if (isset($search['name'])) $certificate = $certificate->where('name','like', '%'.$search['name'].'%');
-        if (isset($search['rank'])) $certificate = $certificate->where('rank','like', '%'.$search['rank'].'%');
+        if (isset($search['rank'])) $certificate = $certificate->where('rank',$search['rank']);
         if (isset($search['district_id'])) $certificate = $certificate->where('district_id',$search['district_id']);
         return $certificate;
     }
