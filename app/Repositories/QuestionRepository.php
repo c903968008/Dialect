@@ -15,13 +15,36 @@ use App\Question;
 class QuestionRepository extends Repository
 {
     protected $model = Question::class;
+    protected $with = ['user','dialect'];
 
     public function search($search)
     {
         $question = new Question();
         if (isset($search['difficulty'])) $question = $question->where('difficulty',$search['difficulty']);
-        if (isset($search['district_id'])) $question = $question->where('district_id',$search['district_id']);
+        if (isset($search['district'])) $question = $question->whereHas('district', function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search['district'] . '%');
+        });
+        if (isset($search['dialect'])) $question = $question->whereHas('dialect', function ($query) use ($search) {
+            $query->where('translation', 'like', '%' . $search['dialect'] . '%');
+        });
+        if (isset($search['user']) && !empty($search['user'])) {
+            if ($search['user'] == '管理员') {
+                $question = $question->where('user_id', 0);
+            } else {
+                $question = $question->whereHas('user', function ($query) use ($search) {
+                    $query->where('nickName', 'like', '%' . $search['user'] . '%');
+                });
+            }
+        }
         return $question;
+    }
+
+    public function getAll($dialect)
+    {
+        $dialect = $dialect->with('dialect');
+        $dialect = $dialect->with('user');
+        $dialect = $dialect->with('district');
+        return $dialect;
     }
 
     /*
@@ -73,5 +96,17 @@ class QuestionRepository extends Repository
             $question->like--;
         }
         return $question->save();
+    }
+
+    /*
+     * 修改
+     */
+    public function update($id,$data,$orther=[])
+    {
+        $flag =  Question::where('id', $id)->update($data);
+        if ($flag){
+            return Question::find($id);
+        }
+        return false;
     }
 }

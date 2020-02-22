@@ -20,18 +20,19 @@ class DialectRepository extends Repository
     {
         $dialect = new Dialect();
         $dialect = $dialect->where('status', $search['status']);
-        if (isset($search['translation'])) $dialect = $dialect->where('translation','like', '%'.$search['translation'].'%');
-        if (isset($search['district'])) $dialect = $dialect->whereHas('district', function ($query) use ($search){
-            $query->where('name', 'like', '%'.$search['district'].'%');
+        if (isset($search['translation'])) $dialect = $dialect->where('translation', 'like', '%' . $search['translation'] . '%');
+        if (isset($search['district'])) $dialect = $dialect->whereHas('district', function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search['district'] . '%');
         });
-        if (isset($search['user']))
+        if (isset($search['user']) && !empty($search['user'])) {
             if ($search['user'] == '管理员') {
-                $dialect = $dialect->where('user_id',0);
+                $dialect = $dialect->where('user_id', 0);
             } else {
-                $dialect = $dialect->whereHas('user', function ($query) use ($search){
-                    $query->where('nickName', 'like', '%'.$search['user'].'%');
+                $dialect = $dialect->whereHas('user', function ($query) use ($search) {
+                    $query->where('nickName', 'like', '%' . $search['user'] . '%');
                 });
             }
+        }
         return $dialect;
     }
 
@@ -86,8 +87,8 @@ class DialectRepository extends Repository
      */
     public function update($id,$data,$orther=[])
     {
-        $flag =  Dialect::where('id', $id)->update($data);  //返回值true/false
-        if (count($flag) != 0){
+        $flag =  Dialect::where('id', $id)->update($data);
+        if ($flag){
             return Dialect::find($id);
         }
         return false;

@@ -78,7 +78,7 @@ class QuestionController extends Controller
         $dialect = $this->repository['dialect']->getByTranslation($dialect_name);
         if (isset($district)) {  //方言已存在
             $dialect_id = $dialect->id;
-        } else {    //f方言不存在
+        } else {    //方言不存在
             $create_dialect = $this->repository['dialect']->insert([
                 'user_id' => $user_id,
                 'district_id' => $district_id,

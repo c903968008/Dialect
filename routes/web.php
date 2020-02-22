@@ -68,6 +68,15 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','UserController@delete');
         });
 
+        //问题
+        $router->group(['prefix'=>'question/'], function($router) {
+            $router->get('','QuestionController@index');
+            $router->get('show','QuestionController@show');
+            $router->post('create','QuestionController@create');
+            $router->post('edit','QuestionController@edit');
+            $router->post('delete','QuestionController@delete');
+        });
+
         //地区
         $router->group(['prefix'=>'district/'], function($router) {
             $router->get('','DistrictController@index');
@@ -81,8 +90,8 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
         //反馈
         $router->group(['prefix'=>'feedback/'], function($router) {
-            $router->get('','DistrictController@index');
-            $router->post('delete','DistrictController@delete');
+            $router->get('','FeedbackController@index');
+            $router->post('delete','FeedbackController@delete');
         });
 
         //方言

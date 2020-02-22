@@ -35,6 +35,7 @@ class DialectController extends Controller
             'user_id' => Dialect::ADMIN,
             'district_id' => $request->get('district_id'),
             'translation' => $request->get('translation'),
+            'status' => Dialect::PASS
         ];
         $this->setCreateData($createData);
     }
@@ -49,9 +50,9 @@ class DialectController extends Controller
         $this->setEditRules($editRules);
 
         $editData = [
-            'user_id' =>  Dialect::ADMIN,
             'district_id' => $request->get('district_id'),
             'translation' => $request->get('translation'),
+            'status' => Dialect::PASS
         ];
         $this->setEditData($editData);
     }
