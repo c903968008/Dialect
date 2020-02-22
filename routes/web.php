@@ -68,7 +68,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','UserController@delete');
         });
 
-        //问题
+        //题目
         $router->group(['prefix'=>'question/'], function($router) {
             $router->get('','QuestionController@index');
             $router->get('show','QuestionController@show');

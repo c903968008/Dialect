@@ -47,6 +47,14 @@ class QuestionRepository extends Repository
         return $dialect;
     }
 
+    public function getById($id, bool $bool = false)
+    {
+        $question = Question::with('user');
+        $question = $question->with('dialect');
+        $question = $question->with('district');
+        return $question->find($id);
+    }
+
     /*
      * 根据用户id查询题目数
      */
