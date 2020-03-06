@@ -15,7 +15,7 @@ use App\Question;
 class QuestionRepository extends Repository
 {
     protected $model = Question::class;
-    protected $with = ['user','dialect'];
+    protected $with = ['user','dialect','district'];
 
     public function search($search)
     {
@@ -89,7 +89,7 @@ class QuestionRepository extends Repository
      */
     public function getByUser($user_id)
     {
-        return Question::where('user_id',$user_id)->get();
+        return Question::where('user_id',$user_id)->with('dialect')->with('district')->orderBy('id','DESC')->get();
     }
 
     /*

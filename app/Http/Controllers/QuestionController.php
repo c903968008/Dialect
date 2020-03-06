@@ -27,56 +27,25 @@ class QuestionController extends Controller
     }
 
     /*
-     * 上传音频
-     */
-    public function upload(Request $request)
-    {
-        if(!empty($request->file())){
-            $file = $request->file('audio');
-            if($file -> isValid()) {
-                $clientName = $file -> getClientOriginalName(); //客户端文件名称..
-                $tmpName = $file ->getFileName(); //缓存在tmp文件夹中的文件名例php8933.tmp 这种类型的.
-                $realPath = $file -> getRealPath(); //这个表示的是缓存在tmp文件夹下的文件的绝对路径
-                $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
-                $mimeTye = $file -> getMimeType(); //也就是该资源的媒体类型
-                $newName = $newName = md5(date('ymdhis').$clientName).".". $entension; //定义上传文件的新名称
-                $path = $file -> move('audio/',$newName); //把缓存文件移动到制定文件夹
-                return $newName;
-            }
-            return false;
-        }
-        return false;
-    }
-
-    /*
      * 用户出题
      */
     public function create(Request $request)
     {
         $validateRules = [
-            'district' => 'required|string',
+            'district_id' => 'required|integer',
             'difficulty' => 'required|integer',
             'dialect' => 'required|string',
             'wrong' => 'required|string',
-            'audio' => 'required'
         ];
         $this->validate($request, $validateRules);
 
-        $district_name = $request->get('district');
+        $district_id = $request->get('district_id');
         $dialect_name = $request->get('dialect');
         $user_id = $request->get('sub');
 
-        $audio = $this->upload($request);
-        if (!$audio){
-            return ResponseWrapper::fail('音频上传失败');
-        }
-
-        $district = $this->repository['district']->getByName($district_name);
-        $district_id = $district->id;
-
         //判断方言
-        $dialect = $this->repository['dialect']->getByTranslation($dialect_name);
-        if (isset($district)) {  //方言已存在
+        $dialect = $this->repository['dialect']->getByTraDis($dialect_name,$district_id);
+        if (count($dialect)) {  //方言已存在
             $dialect_id = $dialect->id;
         } else {    //方言不存在
             $create_dialect = $this->repository['dialect']->insert([
@@ -97,14 +66,100 @@ class QuestionController extends Controller
             'district_id' => $district_id,
             'wrong' => $request->get('wrong'),
             'difficulty' => $request->get('difficulty'),
-            'audio' => $audio,
         ];
 
         $flag = $this->repository['self']->insert($data);
         if (count($flag)) {
+            return ResponseWrapper::success($flag);
+        }
+        return ResponseWrapper::fail();
+    }
+
+    /*
+     * 修改题目
+     */
+    public function edit(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer',
+            'district_id' => 'required|integer',
+            'difficulty' => 'required|integer',
+            'dialect' => 'required|string',
+            'wrong' => 'required|string',
+        ];
+        $this->validate($request, $validateRules);
+
+        $id = $request->get('id');
+        $district_id = $request->get('district_id');
+        $dialect_name = $request->get('dialect');
+
+        //判断方言
+        $dialect = $this->repository['dialect']->getByTraDis($dialect_name,$district_id);
+        if (count($dialect)) {  //方言已存在
+            $dialect_id = $dialect->id;
+        } else {    //方言不存在
+            $create_dialect = $this->repository['dialect']->insert([
+                'district_id' => $district_id,
+                'translation' => $dialect_name,
+                'status' => Dialect::UNAUDITED,
+            ]);
+            if (!isset($create_dialect)){
+                return ResponseWrapper::fail('方言创建失败');
+            }
+            $dialect_id = $create_dialect->id;
+        }
+
+        $data = [
+            'dialect_id' => $dialect_id,
+            'district_id' => $district_id,
+            'wrong' => $request->get('wrong'),
+            'difficulty' => $request->get('difficulty'),
+        ];
+
+        $flag = $this->repository['self']->update($id,$data);
+        if($flag){
             return ResponseWrapper::success();
         }
         return ResponseWrapper::fail();
+    }
+
+    /*
+     * 上传录音
+     */
+    public function uploadAudio(Request $request)
+    {
+        $validateRules = [
+            'id' => 'required|integer',
+            'dialect_id' => 'required|integer',
+            'audio' => 'required'
+        ];
+        $this->validate($request, $validateRules);
+
+        $id = $request->get('id');
+        $dialect_id = $request->get('dialect_id');
+        $audio = $this->upload($request);
+        if ($audio == false){
+            return ResponseWrapper::fail('音频上传失败');
+        }
+        $flag = $this->repository['self']->update($id,['audio'=>$audio]);
+        if ($flag == false){
+            return ResponseWrapper::fail();
+        }
+
+//        dd($dialect_id);
+        $dialect = $this->repository['dialect']->getById($dialect_id);
+//        dd($dialect);
+        if (empty($dialect->audio)){ //方言音频为空
+//            return 'kong';
+            $flag = $this->repository['dialect']->update($dialect_id,['audio'=>$audio]);
+//            dd($flag);
+            if ($flag == false){
+                return ResponseWrapper::fail();
+            }
+        }
+//        return 'bu';
+        return ResponseWrapper::success();
+
     }
 
     /*

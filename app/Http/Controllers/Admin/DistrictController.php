@@ -50,6 +50,7 @@ class DistrictController extends Controller
         $this->setEditData($editData);
     }
 
+    //根据p_id查
     public function list(Request $request)
     {
         $validateRules = [
@@ -62,6 +63,7 @@ class DistrictController extends Controller
         return ResponseWrapper::success($district);
     }
 
+    //根据p_id查上级地区
     public function getPrevious(Request $request)
     {
         $validateRules = [

@@ -35,4 +35,18 @@ class DistrictController extends Controller
         return ResponseWrapper::success($list);
     }
 
+    //根据p_id查
+    public function listByPid(Request $request)
+    {
+        $validateRules = [
+            'p_id' => 'required|integer'
+        ];
+        $this->validate($request, $validateRules);
+
+        $p_id = $request->get('p_id');
+        $district = $this->repository['self']->getByPid($p_id);
+        return ResponseWrapper::success($district);
+    }
+
+
 }

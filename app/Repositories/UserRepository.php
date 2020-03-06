@@ -35,9 +35,6 @@ class UserRepository extends Repository
     public function getOrderByRight()
     {
         $users = User::get();
-        foreach ($users as &$user){
-            $user->accuracy = number_format($user->right / $user->total, 2);
-        }
         return $users->sortByDesc('accuracy');
     }
 

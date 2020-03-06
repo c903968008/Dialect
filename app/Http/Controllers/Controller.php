@@ -159,7 +159,7 @@ class Controller extends BaseController
         ];
         $this->validate($request, $validateRules);
         $id = $request->get('id');
-        $model = $this->repository['self']->getById($id);
+        $model = $this->repository['self']->getById($id,true);
         if (!isset($model)){
             return ResponseWrapper::fail('数据不存在');
         }

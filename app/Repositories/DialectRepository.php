@@ -19,7 +19,7 @@ class DialectRepository extends Repository
     public function search($search)
     {
         $dialect = new Dialect();
-        $dialect = $dialect->where('status', $search['status']);
+        if (isset($search['status'])) $dialect = $dialect->where('status', $search['status']);
         if (isset($search['translation'])) $dialect = $dialect->where('translation', 'like', '%' . $search['translation'] . '%');
         if (isset($search['district'])) $dialect = $dialect->whereHas('district', function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search['district'] . '%');
@@ -62,6 +62,13 @@ class DialectRepository extends Repository
         return Dialect::where('id',$id)->update(['status'=>$status]);
     }
 
+    /*
+     * 根据translation,district查询
+     */
+    public function getByTraDis($translation,$district_id)
+    {
+        return Dialect::where('translation', $translation)->where('district_id',$district_id)->first();
+    }
 
     /*
      * 根据translation查询

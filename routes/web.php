@@ -120,7 +120,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
 
 $router->group(['middleware' => ['cross']], function($router) {
     $router->post('login','AuthController@login');
-//    $router->group(['middleware' => ['auth:api']], function($router) {
+    $router->group(['middleware' => ['auth:api']], function($router) {
 
         //用户
         $router->group(['prefix'=>'user/'], function($router) {
@@ -131,6 +131,9 @@ $router->group(['middleware' => ['cross']], function($router) {
         //问题
         $router->group(['prefix'=>'question/'], function($router) {
             $router->post('create','QuestionController@create');        //出题
+            $router->post('edit','QuestionController@edit');
+            $router->get('show','QuestionController@show');
+            $router->post('audio/upload','QuestionController@uploadAudio');
             $router->get('answer/list','QuestionController@answerList');        //答题列表
             $router->get('answer','QuestionController@answer');        //答题
             $router->get('user/list','QuestionController@userList');        //用户的题
@@ -140,6 +143,7 @@ $router->group(['middleware' => ['cross']], function($router) {
         //地区
         $router->group(['prefix'=>'district/'], function($router) {
             $router->get('list','DistrictController@list');         //地区列表
+            $router->get('plist','DistrictController@listByPid');
         });
 
         //方言
@@ -149,8 +153,13 @@ $router->group(['middleware' => ['cross']], function($router) {
 
         //反馈
         $router->group(['prefix'=>'feedback/'], function($router) {
-            $router->get('create','FeedbackController@create');         //反馈
+            $router->post('create','FeedbackController@create');         //反馈
         });
 
-//    });
+        //证书
+        $router->group(['prefix'=>'certificate/'], function($router) {
+            $router->get('','CertificateController@index');
+        });
+
+    });
 });
