@@ -158,7 +158,7 @@ $router->group(['middleware' => ['cross']], function($router) {
 
         //证书
         $router->group(['prefix'=>'certificate/'], function($router) {
-            $router->get('','CertificateController@index');
+            $router->get('user/list','CertificateController@userList');
         });
 
     });

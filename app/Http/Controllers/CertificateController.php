@@ -10,13 +10,16 @@ namespace App\Http\Controllers;
 
 
 use App\Repositories\CertificateRepository;
+use App\Repositories\UserCertificateRepository;
 use Illuminate\Http\Request;
 
 class CertificateController extends Controller
 {
-    public function __construct(Request $request, CertificateRepository $repository, bool $is_with = true)
+    public function __construct(Request $request, CertificateRepository $repository, bool $is_with = true,
+                                UserCertificateRepository $userCertificateRepository)
     {
         parent::__construct($request, $repository, $is_with);
+        $this->repository['userCertificate'] = $userCertificateRepository;
     }
 
     /*
@@ -25,10 +28,11 @@ class CertificateController extends Controller
     public function userList(Request $request)
     {
         $user_id = $request->get('sub');
-        $questions = $this->repository['self']->getByUser($user_id);
-        if ($questions->count() == 0){
-            return ResponseWrapper::fail('未获取到题目列表');
+        $ids = $this->repository['userCertificate']->getByUser($user_id);
+        $certificate = $this->repository['self']->getByUser($ids);
+        if ($certificate->count() == 0){
+            return ResponseWrapper::fail('未获取到证书列表');
         }
-        return ResponseWrapper::success($questions);
+        return ResponseWrapper::success($certificate);
     }
 }

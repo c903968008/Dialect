@@ -22,4 +22,12 @@ class UserCertificateRepository extends Repository
     {
         return UserCertificate::where('user_id',$user_id)->count();
     }
+
+    /*
+     * 根据用户id查询
+     */
+    public function getByUser($user_id)
+    {
+        return UserCertificate::where('user_id',$user_id)->pluck('certificate_id');
+    }
 }
