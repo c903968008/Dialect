@@ -76,12 +76,6 @@ class AuthController extends Controller
         if (!isset($user)){
             return ResponseWrapper::fail('登录失败');
         }
-        if ($user->total != 0){
-            $user->accuracy = $user->right / $user->total * 100;
-        } else {
-            $user->accuracy = 0;
-        }
-
         $token = Auth::login($user);
         if(!$token){
             return ResponseWrapper::fail('系统错误，无法生成token');

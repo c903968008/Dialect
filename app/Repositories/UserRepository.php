@@ -34,8 +34,7 @@ class UserRepository extends Repository
      */
     public function getOrderByRight()
     {
-        $users = User::get();
-        return $users->sortByDesc('accuracy');
+        return User::orderBy('accuracy','desc')->get();
     }
 
     /*

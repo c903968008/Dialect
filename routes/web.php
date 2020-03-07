@@ -126,10 +126,12 @@ $router->group(['middleware' => ['cross']], function($router) {
         $router->group(['prefix'=>'user/'], function($router) {
             $router->get('count','UserController@count');       //用户界面的各个需计数的数据
             $router->get('rank','UserController@rank');
+            $router->get('show','UserController@show');
         });
 
         //问题
         $router->group(['prefix'=>'question/'], function($router) {
+            $router->get('list','QuestionController@list');
             $router->post('create','QuestionController@create');        //出题
             $router->post('edit','QuestionController@edit');
             $router->get('show','QuestionController@show');
