@@ -79,6 +79,17 @@ class DialectRepository extends Repository
     }
 
     /*
+     * 根据audio,user_id查询
+     */
+    public function getByAudioUser($audio,$user_id)
+    {
+        return Dialect::where([
+            'audio' => $audio,
+            'user_id' => $user_id
+        ])->first();
+    }
+
+    /*
      * 根据地区查询方言
      */
     public function getByDistrict($district_id, $model = null)

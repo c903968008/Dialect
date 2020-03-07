@@ -14,7 +14,7 @@ use App\Feedback;
 class FeedbackRepository extends Repository
 {
     protected $model = Feedback::class;
-    protected $with = ['user','question','dialect'];
+    protected $with = ['user','question'];
 
     public function search($search)
     {
@@ -30,4 +30,14 @@ class FeedbackRepository extends Repository
         if (isset($search['accepted'])) $feedback = $feedback->where('accepted',$search['accepted']);
         return $feedback;
     }
+
+    /*
+     * 根据question_id,status查询列表
+     */
+    public function getByQueStatus($question_ids,$status)
+    {
+        return Feedback::whereIn('question_id',$question_ids)->where('status',$status)
+            ->with('user')->with('question')->get();
+    }
+
 }

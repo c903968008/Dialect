@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
+
+    const NO_CHECKED = 0;   //未查看
+    const NO_ACCEPTED = 1;  //已查看未接受
+    const ACCEPTED = 2;     //已查看已接受
+
     protected $fillable = [
         'user_id', 'question_id','dialect_id', 'content', 'translation', 'checked', 'accepted'
     ];
@@ -21,11 +26,11 @@ class Feedback extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function dialect()
-    {
-        return $this->belongsTo(Dialect::class);
-    }
+//
+//    public function dialect()
+//    {
+//        return $this->belongsTo(Dialect::class);
+//    }
 
     public function question()
     {

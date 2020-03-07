@@ -93,6 +93,14 @@ class QuestionRepository extends Repository
     }
 
     /*
+     * 根据用户id查询题目ids
+     */
+    public function getIdsByUser($user_id)
+    {
+        return Question::where('user_id',$user_id)->pluck('id');
+    }
+
+    /*
      * 点赞及取消点赞
      */
     public function updateLike($id,$status)

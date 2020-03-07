@@ -133,7 +133,8 @@ $router->group(['middleware' => ['cross']], function($router) {
             $router->post('create','QuestionController@create');        //出题
             $router->post('edit','QuestionController@edit');
             $router->get('show','QuestionController@show');
-            $router->post('audio/upload','QuestionController@uploadAudio');
+            $router->post('audio/upload/create','QuestionController@uploadAudioCreate');
+            $router->post('audio/upload/edit','QuestionController@uploadAudioEdit');
             $router->get('answer/list','QuestionController@answerList');        //答题列表
             $router->get('answer','QuestionController@answer');        //答题
             $router->get('user/list','QuestionController@userList');        //用户的题
@@ -153,7 +154,10 @@ $router->group(['middleware' => ['cross']], function($router) {
 
         //反馈
         $router->group(['prefix'=>'feedback/'], function($router) {
-            $router->post('create','FeedbackController@create');         //反馈
+            $router->post('create','FeedbackController@create');
+            $router->post('status','FeedbackController@status');
+            $router->post('accept','FeedbackController@accept');
+            $router->get('','FeedbackController@index');
         });
 
         //证书
