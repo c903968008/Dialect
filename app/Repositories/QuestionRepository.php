@@ -64,6 +64,14 @@ class QuestionRepository extends Repository
     }
 
     /*
+     * 根据地区id查询
+     */
+    public function getByDistrict($district_id,$num)
+    {
+        return Question::where('district_id',$district_id)->orderByRaw('RAND()')->take($num)->get();
+    }
+
+    /*
      * 根据多个方言id查询题目列表
      */
     public function getByDialects($dialect_ids)

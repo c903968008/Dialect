@@ -26,6 +26,23 @@ class QuestionController extends Controller
         $this->repository['dialect'] = $dialectRepository;
     }
 
+
+    public function list(Request $request)
+    {
+        $validateRules = [
+            'district_id' => 'required|integer',
+        ];
+        $this->validate($request, $validateRules);
+
+        $district_id = $request->get('district_id');
+        $config = getConfig();
+        $question = $this->repository['self']->getByDistrict($district_id,$config['answer_count']);
+        if (isset($question)){
+            return ResponseWrapper::success($question);
+        }
+        return ResponseWrapper::fail();
+    }
+
     /*
      * 用户出题
      */

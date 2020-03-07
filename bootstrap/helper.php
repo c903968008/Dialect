@@ -14,3 +14,10 @@ function getParam($request,$name,$param=null){
         return $request->get($name);
     }
 }
+
+//读取config.json文件
+function getConfig(){
+    $file = file_get_contents('../config.json');
+    $data = json_decode($file, true);
+    return $data;
+}
