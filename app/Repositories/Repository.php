@@ -55,7 +55,7 @@ class Repository
                     return $search['model']->has($this->with)->with($this->with);
                 }
             }
-            return $search['model'];
+            return $search['model']->get();
         } else {
             if ($bool && !empty($this->with)){
                 if (is_array($this->with)){

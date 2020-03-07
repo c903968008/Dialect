@@ -24,9 +24,14 @@ class DistrictController extends Controller
     /*
      * 获取地区列表（根据拼音首字母分组排序）
      */
-    public function list()
+    public function list(Request $request)
     {
-        $district = $this->repository['self']->all()->toArray();
+        $search = json_decode($request->get('search'),true);
+        $district = $this->repository['self']->search($search);
+//        dd($district->get()->toArray());
+        $district = $this->repository['self']->all(true,['is' => true,'model' => $district])->toArray();
+//        dd($district->toArray());
+//        $district = $this->repository['self']->all()->toArray();
         if (!isset($district)){
             return ResponseWrapper::fail('未获取到地区列表');
         }
