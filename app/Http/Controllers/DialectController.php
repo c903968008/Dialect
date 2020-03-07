@@ -36,8 +36,13 @@ class DialectController extends Controller
         $district_id = $request->get('district_id');
         $search = json_decode($request->get('search'),true);
         $dialect = $this->repository['self']->search($search);
-
         $dialect = $this->repository['self']->getByDistrict($district_id,$dialect);
+
+        $colors = ['red','orange','yellow','olive','green','cyan','blue','purple','mauve','pink','brown'];
+        foreach ($dialect as &$value){
+            $value->color = $colors[array_rand($colors)];
+        }
+
         if (!isset($dialect)){
             return ResponseWrapper::fail('未获取到方言');
         }
