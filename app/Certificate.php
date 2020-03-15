@@ -21,4 +21,10 @@ class Certificate extends Model
     {
         return $this->belongsTo(District::class, 'district_id', 'id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_certificate', 'certificate_id', 'user_id')
+            ->as('user_certificate');
+    }
 }

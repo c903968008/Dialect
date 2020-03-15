@@ -14,6 +14,7 @@ use App\Dialect;
 use App\Repositories\DialectRepository;
 use App\Repositories\DistrictRepository;
 use App\Repositories\QuestionRepository;
+use App\Repositories\UserCertificateRepository;
 use App\Repositories\UserDataRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -22,13 +23,15 @@ class QuestionController extends Controller
 {
     public function __construct(Request $request, QuestionRepository $repository, bool $is_with = true,
                                 DistrictRepository $districtRepository, DialectRepository $dialectRepository,
-                                UserRepository $userRepository, UserDataRepository $userDataRepository)
+                                UserRepository $userRepository, UserDataRepository $userDataRepository,
+                                UserCertificateRepository $userCertificateRepository)
     {
         parent::__construct($request, $repository, $is_with);
         $this->repository['district'] = $districtRepository;
         $this->repository['dialect'] = $dialectRepository;
         $this->repository['user'] = $userRepository;
         $this->repository['user_data'] = $userDataRepository;
+        $this->repository['user_certificate'] = $userCertificateRepository;
     }
 
     /*
@@ -55,6 +58,7 @@ class QuestionController extends Controller
         if (!$user_data_flag) {
             return ResponseWrapper::fail('用户修改成功，user_data出错');
         }
+        $this->repository['user_certificate']->getCertificate($user_id,$district_id);
         return ResponseWrapper::success();
     }
 

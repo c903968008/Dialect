@@ -14,6 +14,8 @@ $router->get('',function (){
     return 'lumen';
 });
 
+$router->post('test','Controller@test');
+
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
     $router->post('login','AuthController@login');
