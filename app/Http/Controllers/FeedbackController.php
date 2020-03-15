@@ -30,7 +30,7 @@ class FeedbackController extends Controller
     {
         $createRules = [
             'question_id' => 'required|integer',
-            'dialect_id' => 'required|integer',
+//            'dialect_id' => 'required|integer',
             'content' => 'required|string',
             'translation' => 'required|string',
         ];
@@ -39,7 +39,7 @@ class FeedbackController extends Controller
         $createData = [
             'user_id' => $request->get('sub'),
             'question_id' => $request->get('question_id'),
-            'dialect_id' => $request->get('dialect_id'),
+//            'dialect_id' => $request->get('dialect_id'),
             'content' => $request->get('content'),
             'translation' => $request->get('translation'),
         ];

@@ -19,7 +19,7 @@ class Feedback extends Model
     const ACCEPTED = 2;     //已查看已接受
 
     protected $fillable = [
-        'user_id', 'question_id','dialect_id', 'content', 'translation', 'checked', 'accepted'
+        'user_id', 'question_id', 'content', 'translation', 'status'
     ];
 
     public function user()
