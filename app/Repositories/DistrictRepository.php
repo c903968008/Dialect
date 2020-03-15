@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 
+use App\Dialect;
 use App\District;
 use Illuminate\Support\Facades\DB;
 
@@ -46,6 +47,14 @@ class DistrictRepository extends Repository
     public function getPrevious($p_id)
     {
         return District::find($p_id);
+    }
+
+    /*
+     * 根据ids查询
+     */
+    public function getByIds($ids,$model)
+    {
+        return $model->whereIn('id',$ids)->get();
     }
 
 }

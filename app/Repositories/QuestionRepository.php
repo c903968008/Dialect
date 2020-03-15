@@ -68,7 +68,10 @@ class QuestionRepository extends Repository
      */
     public function getByDistrict($district_id,$num)
     {
-        return Question::where('district_id',$district_id)->orderByRaw('RAND()')->take($num)->get();
+        return Question::with('dialect')->with('district')
+                ->where('district_id',$district_id)->
+//            orderByRaw('RAND()')->take($num)->
+            get();
     }
 
     /*
@@ -132,5 +135,13 @@ class QuestionRepository extends Repository
             return Question::find($id);
         }
         return false;
+    }
+
+    /*
+     * 获取所有district_ids
+     */
+    public function getDistrictIds()
+    {
+        return array_unique(Question::pluck('district_id')->toArray());
     }
 }

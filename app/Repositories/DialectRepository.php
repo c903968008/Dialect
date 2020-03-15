@@ -111,4 +111,12 @@ class DialectRepository extends Repository
         }
         return false;
     }
+
+    /*
+     * 获取所有district_ids
+     */
+    public function getDistrictIds()
+    {
+        return array_unique(Dialect::pluck('district_id')->toArray());
+    }
 }

@@ -14,20 +14,54 @@ use App\Dialect;
 use App\Repositories\DialectRepository;
 use App\Repositories\DistrictRepository;
 use App\Repositories\QuestionRepository;
+use App\Repositories\UserDataRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
     public function __construct(Request $request, QuestionRepository $repository, bool $is_with = true,
-                                DistrictRepository $districtRepository, DialectRepository $dialectRepository)
+                                DistrictRepository $districtRepository, DialectRepository $dialectRepository,
+                                UserRepository $userRepository, UserDataRepository $userDataRepository)
     {
         parent::__construct($request, $repository, $is_with);
         $this->repository['district'] = $districtRepository;
         $this->repository['dialect'] = $dialectRepository;
+        $this->repository['user'] = $userRepository;
+        $this->repository['user_data'] = $userDataRepository;
     }
 
+    /*
+     * 答题后提交结果
+     */
+    public function answer(Request $request)
+    {
+        $validateRules = [
+            'district_id' => 'required|integer',
+            'right' => 'required|integer',
+        ];
+        $this->validate($request, $validateRules);
 
-    public function list(Request $request)
+        $user_id = $request->get('sub');
+        $district_id= $request->get('district_id');
+        $right = $request->get('right');
+        $config = getConfig();
+        $total = $config['answer_count'];
+        $user_flag = $this->repository['user']->calculateScores($user_id,$right,$total);
+        if (!$user_flag) {
+            return ResponseWrapper::fail('用户bug');
+        }
+        $user_data_flag = $this->repository['user_data']->calculateScores($user_id,$district_id,$right,$total);
+        if (!$user_data_flag) {
+            return ResponseWrapper::fail('用户修改成功，user_data出错');
+        }
+        return ResponseWrapper::success();
+    }
+
+    /*
+     * 答题列表
+     */
+    public function answerList(Request $request)
     {
         $validateRules = [
             'district_id' => 'required|integer',
@@ -37,6 +71,22 @@ class QuestionController extends Controller
         $district_id = $request->get('district_id');
         $config = getConfig();
         $question = $this->repository['self']->getByDistrict($district_id,$config['answer_count']);
+        foreach ($question as &$value){
+            $options = explode(',',$value['wrong']);
+            shuffle($options);
+            $tran = [$value['dialect']['translation']];
+            $index_arr = [0,1,2,3];
+            $index = array_rand($index_arr,1);
+            array_splice($options,$index,0,$tran);
+            $op = [];
+            foreach ($options as $key => $opvalue){
+                $op[$key] = [
+                    'color' => 'blue',
+                    'value' => $opvalue,
+                ];
+            }
+            $value['options'] = $op;
+        }
         if (isset($question)){
             return ResponseWrapper::success($question);
         }
@@ -202,49 +252,6 @@ class QuestionController extends Controller
         }
         return ResponseWrapper::success();
 
-    }
-
-    /*
-     * 答题列表
-     */
-    public function answerList(Request $request)
-    {
-        $validateRules = [
-            'district_id' => 'required|integer',
-        ];
-        $this->validate($request, $validateRules);
-
-        $district_id = $request->get('district_id');
-        $dialect = $this->repository['dialect']->getByDistrict($district_id);
-        $dialect_ids = $dialect->pluck('id');
-        $questions = $this->repository['self']->getByDialects($dialect_ids);
-        if ($questions->count() == 0){
-            return ResponseWrapper::fail('未获取到题目');
-        }
-        return ResponseWrapper::success($questions);
-    }
-
-    /*
-     * 答题
-     */
-    public function answer(Request $request)
-    {
-        $validateRules = [
-            'id' => 'required|integer',
-            'answer' => 'required|string'
-        ];
-        $this->validate($request, $validateRules);
-
-        $id = $request->get('id');
-        $answer = $request->get('answer');
-        if($this->repository['self']->isWrong($id,$answer)){
-            return ResponseWrapper::fail('回答错误');
-        }
-        $dialect = $this->repository['dialect']->getByTranslation($answer);
-        if (!isset($dialect)){
-            return ResponseWrapper::fail('回答错误');
-        }
-        return ResponseWrapper::success();
     }
 
     /*

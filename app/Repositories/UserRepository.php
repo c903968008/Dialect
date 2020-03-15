@@ -63,4 +63,20 @@ class UserRepository extends Repository
         return $user;
     }
 
+    /*
+     * 计分
+     */
+    public function calculateScores($user_id,$right,$total)
+    {
+        $user = User::find($user_id);
+        $user->right += $right;
+        $user->total += $total;
+        $user->accuracy = round($user->right / $user->total * 100);
+        if ($user->save()){
+            return true;
+        }
+        return false;
+    }
+
+
 }

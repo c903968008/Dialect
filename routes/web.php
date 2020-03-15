@@ -131,14 +131,13 @@ $router->group(['middleware' => ['cross']], function($router) {
 
         //问题
         $router->group(['prefix'=>'question/'], function($router) {
-            $router->get('list','QuestionController@list');
             $router->post('create','QuestionController@create');        //出题
             $router->post('edit','QuestionController@edit');
             $router->get('show','QuestionController@show');
             $router->post('audio/upload/create','QuestionController@uploadAudioCreate');
             $router->post('audio/upload/edit','QuestionController@uploadAudioEdit');
             $router->get('answer/list','QuestionController@answerList');        //答题列表
-            $router->get('answer','QuestionController@answer');        //答题
+            $router->post('answer','QuestionController@answer');        //答题
             $router->get('user/list','QuestionController@userList');        //用户的题
             $router->post('good','QuestionController@good');        //点赞
         });
