@@ -44,7 +44,7 @@ class QuestionRepository extends Repository
         $dialect = $dialect->with('dialect');
         $dialect = $dialect->with('user');
         $dialect = $dialect->with('district');
-        return $dialect;
+        return $dialect->get();
     }
 
     public function getById($id, bool $bool = false)

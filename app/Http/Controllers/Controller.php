@@ -137,7 +137,7 @@ class Controller extends BaseController
         $model = $model->orderBy('id','DESC');
         $page = getParam($request,'page',1);
         $size = getParam($request,'size',20);
-        $model = $this->repository['self']->all($this->is_with,['is' => true,'model' => $model]);
+        $model = $this->repository['self']->all(true,['is' => true,'model' => $model]);
         $count = $model->count();
         if ($count == 0){
             return ResponseWrapper::success(['count'=>$count]);

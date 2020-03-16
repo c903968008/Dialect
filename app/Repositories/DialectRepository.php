@@ -40,7 +40,7 @@ class DialectRepository extends Repository
     {
         $dialect = $dialect->with('district');
         $dialect = $dialect->with('user');
-        return $dialect;
+        return $dialect->get();
     }
 
     /*

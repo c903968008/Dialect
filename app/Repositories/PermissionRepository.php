@@ -27,4 +27,5 @@ class PermissionRepository extends Repository
     {
         return Permission::all();
     }
+
 }

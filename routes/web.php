@@ -116,6 +116,15 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','CertificateController@delete');
         });
 
+        //活动
+        $router->group(['prefix'=>'activity/'], function($router) {
+            $router->get('','ActivityController@index');
+            $router->get('show','ActivityController@show');
+            $router->post('create','ActivityController@create');
+            $router->post('edit','ActivityController@edit');
+            $router->post('delete','ActivityController@delete');
+        });
+
     });
 
 });
@@ -166,6 +175,12 @@ $router->group(['middleware' => ['cross']], function($router) {
         //证书
         $router->group(['prefix'=>'certificate/'], function($router) {
             $router->get('user/list','CertificateController@userList');
+        });
+
+        //活动
+        $router->group(['prefix'=>'notice/'], function($router) {
+            $router->get('','ActivityController@index');
+            $router->get('show','ActivityController@show');
         });
 
     });

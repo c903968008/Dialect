@@ -40,4 +40,24 @@ class FeedbackRepository extends Repository
             ->with('user')->with('question')->get();
     }
 
+    public function all(bool $bool = false, array $search = ['is' => false, 'model' => null])
+    {
+        //搜索
+        if ($search['is']){
+            if ($bool && !empty($this->with)){
+                return $search['model']->has('question')->with(['question' => function($query){
+                    $query->with('dialect');
+                }])->with('user')->get();
+            }
+            return $search['model']->get();
+        } else {
+            if ($bool && !empty($this->with)){
+                return $search['model']->has('question')->with(['question' => function($query){
+                    $query->with('dialect');
+                }])->with('user')->get();
+            }
+            return $this->model::all();
+        }
+    }
+
 }

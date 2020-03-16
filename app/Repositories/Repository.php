@@ -9,8 +9,6 @@
 namespace App\Repositories;
 
 
-
-
 class Repository
 {
     /**
@@ -43,20 +41,6 @@ class Repository
      */
     public function all(bool $bool = false, array $search = ['is' => false, 'model' => null])
     {
-        //搜索
-        if ($search['is']){
-            if ($bool && !empty($this->with)){
-                if (is_array($this->with)){
-                    foreach ($this->with as $key => $value){
-                        $model = $search['model']->has($value)->with($value);
-                    }
-                    return $model;
-                } else{
-                    return $search['model']->has($this->with)->with($this->with);
-                }
-            }
-            return $search['model']->get();
-        } else {
             if ($bool && !empty($this->with)){
                 if (is_array($this->with)){
                     foreach ($this->with as $key => $value){
@@ -70,8 +54,7 @@ class Repository
                     return $this->model::has($this->with)->with($this->with)->get();
                 }
             }
-            return $this->model::all();
-        }
+            return $this->model::get();
     }
 
     /**
@@ -84,7 +67,7 @@ class Repository
      */
     public function page($model, $page, $size)
     {
-        return $model->forPage($page,$size)->get();
+        return $model->forPage($page,$size);
     }
 
     /**
