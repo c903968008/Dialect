@@ -22,7 +22,10 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
 
-    public function __construct(Request $request, Repository $repository, bool $is_with = true, UserRepository $userRepository, DialectRepository $dialectRepository, DistrictRepository $districtRepository, QuestionRepository $questionRepository, UserDataRepository $userDataRepository)
+    public function __construct(Request $request, Repository $repository, bool $is_with = true,
+                                UserRepository $userRepository, DialectRepository $dialectRepository,
+                                DistrictRepository $districtRepository, QuestionRepository $questionRepository,
+                                UserDataRepository $userDataRepository)
     {
         parent::__construct($request, $repository, $is_with);
         $this->repository['dialect'] = $dialectRepository;
@@ -49,9 +52,19 @@ class DashboardController extends Controller
     /*
      * 总排名
      */
-    public function rank()
+    public function rank(Request $request)
     {
-        $rank = $this->repository['user']->getOrderByRight();
+        $validateRules = [
+            'district_id' => 'nullable|integer'
+        ];
+        $this->validate($request, $validateRules);
+
+        $district_id = $request->get('district_id');
+        if (!empty($district_id)){
+            $rank = $this->repository['userData']->getOrderByRightAndDistrict($district_id);
+        } else{
+            $rank = $this->repository['user']->getOrderByRight();
+        }
         return ResponseWrapper::success($rank);
     }
 

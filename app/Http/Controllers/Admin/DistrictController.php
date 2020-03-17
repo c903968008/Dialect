@@ -76,4 +76,10 @@ class DistrictController extends Controller
         return ResponseWrapper::success($district);
     }
 
+    public function getAll()
+    {
+        $district = $this->repository['self']->getAll();
+        return ResponseWrapper::success($district);
+    }
+
 }

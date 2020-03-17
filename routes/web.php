@@ -32,6 +32,12 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->get('district/rank','DashboardController@rankByDistrict');
         });
 
+        //设置
+        $router->group(['prefix'=>'config/'], function($router) {
+            $router->get('edit','ConfigController@edit');
+            $router->get('show','ConfigController@show');
+        });
+
         //管理员
         $router->group(['prefix'=>'administrator/'], function($router) {
             $router->get('','AdminController@index');
@@ -88,6 +94,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','DistrictController@delete');
             $router->get('list','DistrictController@list');
             $router->get('previous','DistrictController@getPrevious');
+            $router->get('all','DistrictController@getAll');
         });
 
         //反馈

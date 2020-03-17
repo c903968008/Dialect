@@ -70,8 +70,8 @@ class QuestionRepository extends Repository
     {
         return Question::with('dialect')->with('district')
                 ->where('district_id',$district_id)->
-//            orderByRaw('RAND()')->take($num)->
-            get();
+                orderByRaw('RAND()')->take($num)->
+                get();
     }
 
     /*
@@ -135,6 +135,16 @@ class QuestionRepository extends Repository
             return Question::find($id);
         }
         return false;
+    }
+
+    /*
+     * 修改多个right/total
+     */
+    public function updateRightTotal($right_ids,$total_ids)
+    {
+        $flag1 =  Question::whereIn('id', $right_ids)->increment('answer_right');
+        $flag2 =  Question::whereIn('id', $total_ids)->increment('answer_total');
+        return true;
     }
 
     /*

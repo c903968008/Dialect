@@ -42,14 +42,19 @@ class QuestionController extends Controller
         $validateRules = [
             'district_id' => 'required|integer',
             'right' => 'required|integer',
+            'right_ids' => 'required',
+            'total_ids' => 'required',
         ];
         $this->validate($request, $validateRules);
 
         $user_id = $request->get('sub');
         $district_id= $request->get('district_id');
         $right = $request->get('right');
+        $right_ids = $request->get('right_ids');
+        $total_ids = $request->get('total_ids');
         $config = getConfig();
         $total = $config['answer_count'];
+        $question_flag = $this->repository['self']->updateRightTotal($right_ids,$total_ids);
         $user_flag = $this->repository['user']->calculateScores($user_id,$right,$total);
         if (!$user_flag) {
             return ResponseWrapper::fail('用户bug');

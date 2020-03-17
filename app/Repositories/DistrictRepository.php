@@ -57,4 +57,9 @@ class DistrictRepository extends Repository
         return $model->whereIn('id',$ids)->get();
     }
 
+    public function getAll()
+    {
+        return District::all();
+    }
+
 }

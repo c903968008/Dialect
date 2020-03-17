@@ -20,9 +20,11 @@ class UserDataRepository extends Repository
      */
     public function getOrderByRightAndDistrict($district_id)
     {
-        $users = UserData::get();
+        $users = UserData::where('district_id',$district_id)->with(['user' => function($query){
+            $query->select('id','nickName','avatarUrl');
+        }])->get();
         foreach ($users as &$user){
-            $user->accuracy = number_format($user->right / $user->total, 2);
+            $user->accuracy = number_format($user->right / $user->total, 2) * 100;
         }
         return $users->sortByDesc('accuracy');
     }
