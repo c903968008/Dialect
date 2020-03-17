@@ -137,4 +137,12 @@ class DialectController extends Controller
         return ResponseWrapper::fail();
     }
 
+    /*
+     * 自动审核
+     */
+    public function autoAudit()
+    {
+        $this->repository['self']->autoAudit();
+        return ResponseWrapper::success();
+    }
 }

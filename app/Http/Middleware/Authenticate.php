@@ -35,11 +35,11 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-         if ($this->auth->guard($guard)->guest()) {
-             return response('Unauthorized.', 401);
-         }
-         $sub = $this->auth->guard($guard)->user()->id;
-         $request->merge(['sub' => $sub]);
+        if ($this->auth->guard($guard)->guest()) {
+            return response('Unauthorized.', 401);
+        }
+        $sub = $this->auth->guard($guard)->user()->id;
+        $request->merge(['sub' => $sub]);
         return $next($request);
     }
 }

@@ -64,7 +64,7 @@ $app->singleton(
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
      'cross' => App\Http\Middleware\CrossRequestMiddleware::class,
-
+     'permission' => App\Http\Middleware\PermissionMiddleware::class,
  ]);
 
 /*

@@ -21,7 +21,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
     $router->post('login','AuthController@login');
     $router->post('logout','AuthController@logout');
 
-    $router->group(['middleware' => 'auth:web'], function($router) {
+    $router->group(['middleware' => ['auth:web','permission']], function($router) {
 
         $router->get('get_info','AdminController@getInfo');
 
@@ -112,6 +112,7 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->post('delete','DialectController@delete');
             $router->get('list','DialectController@list');
             $router->post('audit','DialectController@audit');
+            $router->post('audit/auto','DialectController@autoAudit');
         });
 
         //证书

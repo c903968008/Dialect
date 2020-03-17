@@ -10,6 +10,9 @@ namespace App\Repositories;
 
 
 use App\Dialect;
+use App\Feedback;
+use App\Http\Controllers\ResponseWrapper;
+use App\Question;
 
 class DialectRepository extends Repository
 {
@@ -118,5 +121,89 @@ class DialectRepository extends Repository
     public function getDistrictIds()
     {
         return array_unique(Dialect::pluck('district_id')->toArray());
+    }
+
+    /*
+     * 自动审核
+     */
+    public function autoAudit()
+    {
+        //找dialect对应的question(dialect_id/district_id/audio相同)
+            //存在
+                //如果符合要求，则通过
+                //如果不符合要求
+                    //1.没有其他对应的question(dialect_id/district_id相同/audio不相同)，则不通过
+                    //2.有其他对应的question，则dialect->audio = question->audio，并且通过  （如有多个，则选择第一个；等待下次自动审核，再更新）
+            //不存在
+                //1.没有其他对应的question(dialect_id/district_id相同/audio不相同)，则不通过
+                //2.有其他对应的question，则dialect->audio = question->audio，并且通过
+
+        $dialects = Dialect::all();
+        foreach ($dialects as $dialect){
+//            var_dump($dialect->toArray());
+            $question1 = Question::where(['dialect_id'=>$dialect->id,'district_id'=>$dialect->district_id,'audio'=>$dialect->audio])->first();
+//            dd(isset($question1));
+            if (isset($question1)){      //存在
+                $feedback_count = Feedback::where('question_id',$question1->id)->count();
+                if ($this->audioConditions($question1,$feedback_count)){        //1符合要求，通过
+                    $dialect->status = Dialect::PASS;
+                    $dialect->save();
+                } else {        //1不符合条件
+                    $questions2 = Question::where(['dialect_id'=>$dialect->id,'district_id'=>$dialect->district_id])->get();
+//                    dd(empty($questions2));
+                    if (empty($questions2)){        //2不存在，不通过
+                        $dialect->status = Dialect::NOPASS;
+                        $dialect->save();
+                    } else {    //2存在
+                        foreach ($questions2 as $question2){
+                            $feedback_count = Feedback::where('question_id',$question2->id)->count();
+                            if ($this->audioConditions($question2,$feedback_count)){
+                                $dialect->audio = $question2->audio;
+                                $dialect->status = Dialect::PASS;
+                                $dialect->save();
+                            }
+                        }
+                    }
+                }
+            } else {        //不存在
+                $questions2 = Question::where(['dialect_id'=>$dialect->id,'district_id'=>$dialect->district_id])->get();
+                if (empty($questions2)){        //2不存在，不通过
+                    $dialect->status = Dialect::NOPASS;
+                    $dialect->save();
+                } else {    //2存在
+                    foreach ($questions2 as $question2){
+                        $feedback_count = Feedback::where('question_id',$question2->id)->count();
+                        if ($this->audioConditions($question2,$feedback_count)){
+                            $dialect->audio = $question2->audio;
+                            $dialect->status = Dialect::PASS;
+                            $dialect->save();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+     * 审核通过的条件
+     */
+    public function audioConditions($question, $feedback_count)
+    {
+        $config = getConfig();
+        if ($question->answer_total == 0){
+            $accuracy = 0;
+        } else{
+            $accuracy = ($question->answer_right / $question->answer_total) * 100;
+        }
+//        var_dump($question->answer_total >= $config['dialect_audit_total']);
+//        var_dump($accuracy >= $config['dialect_audit_accuracy']);
+//        var_dump($feedback_count < $config['feedback_count']);
+        if ($question->answer_total >= $config['dialect_audit_total'] &&
+            $accuracy >= $config['dialect_audit_accuracy'] &&
+            $feedback_count < $config['feedback_count'])
+        {
+            return true;
+        }
+        return false;
     }
 }
