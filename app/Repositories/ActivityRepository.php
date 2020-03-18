@@ -18,7 +18,7 @@ class ActivityRepository extends Repository
     public function search($search)
     {
         $activity= new Activity();
-        if (isset($search['title'])) $activity = $activity->where('p_id', $search['p_id']);
+        if (isset($search['title'])) $activity = $activity->where('title', $search['title']);
         return $activity;
     }
 

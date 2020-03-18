@@ -28,7 +28,7 @@ class QuestionRepository extends Repository
             $query->where('translation', 'like', '%' . $search['dialect'] . '%');
         });
         if (isset($search['user']) && !empty($search['user'])) {
-            if ($search['user'] == '管理员') {
+            if (strpos('管理员',$search['user']) !== false) {
                 $question = $question->where('user_id', 0);
             } else {
                 $question = $question->whereHas('user', function ($query) use ($search) {
@@ -41,9 +41,9 @@ class QuestionRepository extends Repository
 
     public function getAll($dialect)
     {
-        $dialect = $dialect->with('dialect');
+        $dialect = $dialect->has('dialect')->with('dialect');
         $dialect = $dialect->with('user');
-        $dialect = $dialect->with('district');
+        $dialect = $dialect->has('district')->with('district');
         return $dialect->get();
     }
 
@@ -68,10 +68,10 @@ class QuestionRepository extends Repository
      */
     public function getByDistrict($district_id,$num)
     {
-        return Question::with('dialect')->with('district')
-                ->where('district_id',$district_id)->
-                orderByRaw('RAND()')->take($num)->
-                get();
+        return Question::has('dialect')->with('dialect')
+                ->has('district')->with('district')
+                ->where('district_id',$district_id)
+                ->orderByRaw('RAND()')->take($num)->get();
     }
 
     /*
@@ -100,7 +100,8 @@ class QuestionRepository extends Repository
      */
     public function getByUser($user_id)
     {
-        return Question::where('user_id',$user_id)->with('dialect')->with('district')->orderBy('id','DESC')->get();
+        return Question::where('user_id',$user_id)->has('dialect')->with('dialect')
+                        ->has('district')->with('district')->orderBy('id','DESC')->get();
     }
 
     /*
@@ -110,6 +111,10 @@ class QuestionRepository extends Repository
     {
         return Question::where('user_id',$user_id)->pluck('id');
     }
+
+    /*
+     * 根据用户id查询题目ids,非管理员
+     */
 
     /*
      * 点赞及取消点赞

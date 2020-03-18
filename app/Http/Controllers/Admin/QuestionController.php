@@ -73,7 +73,7 @@ class QuestionController extends Controller
         $dialect = $this->repository['self']->getAll($dialect);
         $count = $dialect->count();
         if ($count == 0){
-            return ResponseWrapper::success(['count'=>$count]);
+            return ResponseWrapper::success(['count'=>$count,'reslut'=>$dialect]);
         }
         $dialect = $this->repository['self']->page($dialect,$page,$size);
         return ResponseWrapper::success(['count'=>$count,'reslut'=>$dialect]);

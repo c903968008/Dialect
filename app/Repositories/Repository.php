@@ -41,6 +41,20 @@ class Repository
      */
     public function all(bool $bool = false, array $search = ['is' => false, 'model' => null])
     {
+        //搜索
+        if ($search['is']){
+            if ($bool && !empty($this->with)){
+                if (is_array($this->with)){
+                    foreach ($this->with as $key => $value){
+                        $model = $search['model']->has($value)->with($value);
+                    }
+                    return $model->get();
+                } else{
+                    return $search['model']->has($this->with)->with($this->with)->get();
+                }
+            }
+            return $search['model']->get();
+        } else {
             if ($bool && !empty($this->with)){
                 if (is_array($this->with)){
                     foreach ($this->with as $key => $value){
@@ -55,6 +69,7 @@ class Repository
                 }
             }
             return $this->model::get();
+        }
     }
 
     /**

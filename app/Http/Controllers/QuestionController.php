@@ -42,7 +42,8 @@ class QuestionController extends Controller
         $validateRules = [
             'district_id' => 'required|integer',
             'right' => 'required|integer',
-            'right_ids' => 'required',
+            'total' => 'required|integer',
+            'right_ids' => 'nullable',
             'total_ids' => 'required',
         ];
         $this->validate($request, $validateRules);
@@ -50,10 +51,9 @@ class QuestionController extends Controller
         $user_id = $request->get('sub');
         $district_id= $request->get('district_id');
         $right = $request->get('right');
+        $total = $request->get('total');
         $right_ids = $request->get('right_ids');
         $total_ids = $request->get('total_ids');
-        $config = getConfig();
-        $total = $config['answer_count'];
         $question_flag = $this->repository['self']->updateRightTotal($right_ids,$total_ids);
         $user_flag = $this->repository['user']->calculateScores($user_id,$right,$total);
         if (!$user_flag) {
@@ -63,8 +63,11 @@ class QuestionController extends Controller
         if (!$user_data_flag) {
             return ResponseWrapper::fail('用户修改成功，user_data出错');
         }
-        $this->repository['user_certificate']->getCertificate($user_id,$district_id);
-        return ResponseWrapper::success();
+        $certificate = $this->repository['user_certificate']->getCertificate($user_id,$district_id);
+        if (empty($certificate)){
+            return ResponseWrapper::success();
+        }
+        return ResponseWrapper::success($certificate);
     }
 
     /*
@@ -172,30 +175,60 @@ class QuestionController extends Controller
         $question = $this->repository['self']->getById($id);
         $dialect = $this->repository['dialect']->getById($question->dialect_id);
         //修改方言
-        if ($dialect->district_id != $district_id || $dialect->translation != $dialect_name) {
-            $dialectData = [
-                'district_id' => $district_id,
-                'translation' => $dialect_name,
-                'status' => Dialect::UNAUDITED,
-            ];
-            $flag1 = $this->repository['dialect']->update($dialect->id,$dialectData);
-            if (!$flag1){
-                return ResponseWrapper::fail('方言修改bug');
+        if ($dialect->user_id == 0){        //dialect发布人是管理员
+            if ($dialect->district_id != $district_id || $dialect->translation != $dialect_name) {
+                $dialectData = [
+                    'district_id' => $district_id,
+                    'translation' => $dialect_name,
+                    'status' => Dialect::UNAUDITED,
+                    'user_id' => $request->get('sub'),
+                ];
+                $flag1 = $this->repository['dialect']->insert($dialectData);
+                if (empty($flag1)){
+                    return ResponseWrapper::fail('方言修改bug');
+                }
+                $res = ['id' => $id, 'dialect_id' => $flag1->id];
+            } else {
+                $res = ['id' => $id, 'dialect_id' => $dialect->id];
             }
-        }
+            //修改题目
+            $data = [
+                'district_id' => $district_id,
+                'wrong' => $request->get('wrong'),
+                'difficulty' => $request->get('difficulty'),
+                'dialect_id' => $res['dialect_id'],
+            ];
 
-        //修改题目
-        $data = [
-            'district_id' => $district_id,
-            'wrong' => $request->get('wrong'),
-            'difficulty' => $request->get('difficulty'),
-        ];
+            $flag = $this->repository['self']->update($id,$data);
+            if($flag){
+                return ResponseWrapper::success($res);
+            }
+            return ResponseWrapper::fail('问题修改bug');
+        } else {
+            if ($dialect->district_id != $district_id || $dialect->translation != $dialect_name) {
+                $dialectData = [
+                    'district_id' => $district_id,
+                    'translation' => $dialect_name,
+                    'status' => Dialect::UNAUDITED,
+                ];
+                $flag1 = $this->repository['dialect']->update($dialect->id,$dialectData);
+                if (!$flag1){
+                    return ResponseWrapper::fail('方言修改bug');
+                }
+            }
+            //修改题目
+            $data = [
+                'district_id' => $district_id,
+                'wrong' => $request->get('wrong'),
+                'difficulty' => $request->get('difficulty'),
+            ];
 
-        $flag = $this->repository['self']->update($id,$data);
-        if($flag){
-            return ResponseWrapper::success();
+            $flag = $this->repository['self']->update($id,$data);
+            if($flag){
+                return ResponseWrapper::success(['id' => $id, 'dialect_id' => $dialect->id]);
+            }
+            return ResponseWrapper::fail('问题修改bug');
         }
-        return ResponseWrapper::fail('问题修改bug');
     }
 
     /*

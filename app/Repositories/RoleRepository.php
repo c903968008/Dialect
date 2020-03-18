@@ -20,7 +20,7 @@ class RoleRepository extends Repository
     {
         $role = new Role();
         if (isset($search['name'])) $role = $role->where('name','like', '%'.$search['name'].'%');
-        if (isset($search['permission_id'])) $role = $role->whereHas('permissions', function ($query) use ($search){
+        if (isset($search['permission_id']) && !empty($search['permission_id'])) $role = $role->whereHas('permissions', function ($query) use ($search){
             $query->where('permission_id', $search['permission_id']);
         });
         return $role;

@@ -101,6 +101,11 @@ class FeedbackController extends Controller
         $id = $request->get('id');
         $dialect_id = $request->get('dialect_id');
 
+        $dialect = $this->repository['dialect']->getById($dialect_id);
+        if ($dialect->user_id == 0){
+            $this->repository['self']->delete($id);
+            return ResponseWrapper::success();
+        }
         $dflag = $this->repository['dialect']->update($dialect_id,[
             'status' => Dialect::UNAUDITED,
             'translation' => $request->get('translation'),

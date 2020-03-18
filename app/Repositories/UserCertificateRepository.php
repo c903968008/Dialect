@@ -40,7 +40,8 @@ class UserCertificateRepository extends Repository
     public function getCertificate($user_id, $district_id)
     {
         $user_data = UserData::where(['user_id' => $user_id, 'district_id' => $district_id])->first();
-        $certificates = Certificate::where('district_id',$district_id)->get();
+        $has_certificates = UserCertificate::where('user_id',$user_id)->pluck('certificate_id');
+        $certificates = Certificate::whereNotIn('id',$has_certificates)->where('district_id',$district_id)->get();
         // 用户正确答题数  $user_data->right;
         // 证书需要的答题数 $certificates->num;
         $certificate_ids = [];
@@ -53,6 +54,8 @@ class UserCertificateRepository extends Repository
         if (!empty($certificate_ids)){
             $user = User::find($user_id);
             $user->certificates()->sync($certificate_ids);
+            return Certificate::whereIn('id',$certificate_ids)->get(['id','name']);
         }
+        return false;
     }
 }

@@ -14,8 +14,6 @@ $router->get('',function (){
     return 'lumen';
 });
 
-$router->post('test','Controller@test');
-
 $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross'], function($router) {
 
     $router->post('login','AuthController@login');
@@ -30,12 +28,11 @@ $router->group(['prefix'=>'admin/','namespace' => 'Admin','middleware' => 'cross
             $router->get('count','DashboardController@count');
             $router->get('rank','DashboardController@rank');
             $router->get('district/rank','DashboardController@rankByDistrict');
-        });
-
-        //设置
-        $router->group(['prefix'=>'config/'], function($router) {
-            $router->get('edit','ConfigController@edit');
-            $router->get('show','ConfigController@show');
+            //设置
+            $router->group(['prefix'=>'config/'], function($router) {
+                $router->get('edit','ConfigController@edit');
+                $router->get('show','ConfigController@show');
+            });
         });
 
         //管理员

@@ -23,11 +23,12 @@ class FeedbackRepository extends Repository
         if (isset($search['user'])) $feedback = $feedback->whereHas('user', function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search['user'] . '%');
         });
-        if (isset($search['pre_translation'])) $feedback = $feedback->whereHas('dialect', function ($query) use ($search) {
-            $query->where('translation', 'like', '%' . $search['pre_translation'] . '%');
+        if (isset($search['pre_translation'])) $feedback = $feedback->whereHas('question', function ($query) use ($search) {
+            $query->whereHas('dialect', function ($q) use ($search){
+                $q->where('translation', 'like', '%' . $search['pre_translation'] . '%');
+            });
         });
-        if (isset($search['checked'])) $feedback = $feedback->where('checked',$search['checked']);
-        if (isset($search['accepted'])) $feedback = $feedback->where('accepted',$search['accepted']);
+        if (isset($search['status']) && $search['status'] != "") $feedback = $feedback->where('status',$search['status']);
         return $feedback;
     }
 
@@ -45,18 +46,22 @@ class FeedbackRepository extends Repository
         //搜索
         if ($search['is']){
             if ($bool && !empty($this->with)){
-                return $search['model']->has('question')->with(['question' => function($query){
+                return $search['model']->whereHas('question',function ($query){
+                    $query->has('dialect');
+                })->with(['question' => function($query){
                     $query->with('dialect');
                 }])->with('user')->get();
             }
             return $search['model']->get();
         } else {
             if ($bool && !empty($this->with)){
-                return $search['model']->has('question')->with(['question' => function($query){
+                return $search['model']->whereHas('question',function ($query){
+                    $query->has('dialect');
+                })->with(['question' => function($query){
                     $query->with('dialect');
                 }])->with('user')->get();
             }
-            return $this->model::all();
+            return $this->model::get();
         }
     }
 

@@ -20,7 +20,7 @@ class AdminRepository extends Repository
     {
         $admin = new Admin();
         if (isset($search['name'])) $admin = $admin->where('name','like', '%'.$search['name'].'%');
-        if (isset($search['role_id'])) $admin = $admin->whereHas('roles', function ($query) use ($search){
+        if (isset($search['role_id']) && !empty($search['role_id'])) $admin = $admin->whereHas('roles', function ($query) use ($search){
             $query->where('role_id', $search['role_id']);
         });
         return $admin;

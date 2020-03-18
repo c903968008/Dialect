@@ -41,7 +41,7 @@ class DialectRepository extends Repository
 
     public function getAll($dialect)
     {
-        $dialect = $dialect->with('district');
+        $dialect = $dialect->has('district')->with('district');
         $dialect = $dialect->with('user');
         return $dialect->get();
     }
@@ -138,7 +138,7 @@ class DialectRepository extends Repository
                 //1.没有其他对应的question(dialect_id/district_id相同/audio不相同)，则不通过
                 //2.有其他对应的question，则dialect->audio = question->audio，并且通过
 
-        $dialects = Dialect::all();
+        $dialects = Dialect::where('user_id','!=',0)->get();
         foreach ($dialects as $dialect){
 //            var_dump($dialect->toArray());
             $question1 = Question::where(['dialect_id'=>$dialect->id,'district_id'=>$dialect->district_id,'audio'=>$dialect->audio])->first();
