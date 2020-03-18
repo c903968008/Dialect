@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
 use App\Repositories\Repository;
 use App\Repositories\UserCertificateRepository;
 use Illuminate\Http\Request;

@@ -190,3 +190,5 @@ $router->group(['middleware' => ['cross']], function($router) {
 
     });
 });
+
+$router->get('clean','CleanFile@clean');

@@ -43,6 +43,21 @@ return [
 
     'disks' => [
 
+        'uploadActivity' => [
+            'driver' => 'local',
+            'root' => $_SERVER['DOCUMENT_ROOT'].'/activity',
+        ],
+
+        'uploadAvatar' => [
+            'driver' => 'local',
+            'root' => $_SERVER['DOCUMENT_ROOT'].'/avatars',
+        ],
+
+        'uploadDialect' => [
+            'driver' => 'local',
+            'root' => $_SERVER['DOCUMENT_ROOT'].'/dialect',
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

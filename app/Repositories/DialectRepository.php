@@ -28,7 +28,7 @@ class DialectRepository extends Repository
             $query->where('name', 'like', '%' . $search['district'] . '%');
         });
         if (isset($search['user']) && !empty($search['user'])) {
-            if ($search['user'] == '管理员') {
+            if (strpos('管理员',$search['user']) !== false) {
                 $dialect = $dialect->where('user_id', 0);
             } else {
                 $dialect = $dialect->whereHas('user', function ($query) use ($search) {
